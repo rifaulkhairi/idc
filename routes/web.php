@@ -17,6 +17,17 @@ Route::get('/lamaranku', function(){
     return Inertia::render('frontpage/Lamaranku', []);
 })->name("lamaranku");
 
+Route::get('/admin/addtempatmagang', function(){
+    return Inertia::render('admin/Lamaranku', []);
+})->name("lamaranku");
+Route::get('/admin/dashboard', function(){
+    return Inertia::render('Admin/Dashboard', []);
+})->name("admin.dashboard");
+Route::get('/admin/tempatppl', function(){
+    return Inertia::render('Admin/pages/tempatPPL/TempatPPL', []);
+})->name("admin.tempatppl");
+
+
 Route::get('/profil', function(){
     return Inertia::render('frontpage/Profil', []);
 })->name("profil");
