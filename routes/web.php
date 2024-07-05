@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TempatPPLController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -26,6 +27,14 @@ Route::get('/admin/dashboard', function(){
 Route::get('/admin/tempatppl', function(){
     return Inertia::render('Admin/pages/tempatPPL/TempatPPL', []);
 })->name("admin.tempatppl");
+
+Route::get('/admin/addtempatppl', function(){
+    return Inertia::render('Admin/pages/addTempatPPL/AddTempatPPL', []);
+})->name("admin.tempatppl");
+
+Route::get('/admin/tempatppl', [TempatPPLController::class, 'index'])->name("admin.tempatppl");
+Route::get('/admin/addtempatppl', [TempatPPLController::class, 'addTempatPPL'])->name("admin.addtempatppl");
+
 
 
 Route::get('/profil', function(){

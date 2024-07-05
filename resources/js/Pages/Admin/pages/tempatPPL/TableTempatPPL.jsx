@@ -23,6 +23,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { Button, capitalize } from "@mui/material";
+import { Link } from "@inertiajs/react";
 
 function createData(id, name, calories, fat, carbs, protein) {
     return {
@@ -130,7 +131,8 @@ function EnhancedTableHead(props) {
                 {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
-                        align={headCell.numeric ? "right" : "left"}
+                        // align={headCell.numeric ? "right" : "left"}
+                        align={"left"}
                         padding={headCell.disablePadding ? "none" : "normal"}
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
@@ -224,7 +226,7 @@ EnhancedTableToolbar.propTypes = {
     numSelected: PropTypes.number.isRequired,
 };
 
-export default function TableTempatPPL() {
+export default function TableTempatPPL({ tempat_ppl }) {
     const [order, setOrder] = React.useState("asc");
     const [orderBy, setOrderBy] = React.useState("calories");
     const [selected, setSelected] = React.useState([]);
@@ -240,7 +242,7 @@ export default function TableTempatPPL() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelected = rows.map((n) => n.id);
+            const newSelected = tempat_ppl.map((n) => n.id);
             setSelected(newSelected);
             return;
         }
@@ -283,11 +285,13 @@ export default function TableTempatPPL() {
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+        page > 0
+            ? Math.max(0, (1 + page) * rowsPerPage - tempat_ppl.length)
+            : 0;
 
     const visibleRows = React.useMemo(
         () =>
-            stableSort(rows, getComparator(order, orderBy)).slice(
+            stableSort(tempat_ppl, getComparator(order, orderBy)).slice(
                 page * rowsPerPage,
                 page * rowsPerPage + rowsPerPage
             ),
@@ -298,9 +302,11 @@ export default function TableTempatPPL() {
         <Box sx={{ width: "100%" }}>
             <Paper sx={{ width: "100%", mb: 2 }}>
                 <div className="flex pt-4 px-3 justify-end mb-4">
-                    <IconButton variant="contained" color="primary">
-                        <MdAdd/>
-                    </IconButton>
+                    <Link href="/admin/addtempatppl">
+                        <IconButton variant="contained" color="primary">
+                            <MdAdd />
+                        </IconButton>
+                    </Link>
                 </div>
                 <EnhancedTableToolbar numSelected={selected.length} />
                 <TableContainer>
@@ -319,7 +325,9 @@ export default function TableTempatPPL() {
                         />
                         <TableBody>
                             {visibleRows.map((row, index) => {
-                                const isItemSelected = isSelected(row.id);
+                                const isItemSelected = isSelected(
+                                    row.id_tempat
+                                );
                                 const labelId = `enhanced-table-checkbox-${index}`;
 
                                 return (
@@ -328,14 +336,17 @@ export default function TableTempatPPL() {
                                         role="checkbox"
                                         aria-checked={isItemSelected}
                                         tabIndex={-1}
-                                        key={row.id}
+                                        key={row.id_tempat}
                                         selected={isItemSelected}
                                         sx={{ cursor: "pointer" }}
                                     >
                                         <TableCell padding="checkbox">
                                             <Checkbox
                                                 onClick={(event) =>
-                                                    handleClick(event, row.id)
+                                                    handleClick(
+                                                        event,
+                                                        row.id_tempat
+                                                    )
                                                 }
                                                 color="primary"
                                                 checked={isItemSelected}
@@ -350,10 +361,10 @@ export default function TableTempatPPL() {
                                             scope="row"
                                             padding="none"
                                         >
-                                            {row.name}
+                                            {row.nama}
                                         </TableCell>
-                                        <TableCell align="center">
-                                            {row.calories}
+                                        <TableCell align="left">
+                                            {row.nama_supervisor}
                                         </TableCell>
 
                                         <TableCell align="center">
