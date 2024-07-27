@@ -168,3 +168,13 @@ export const data_prodi = [
     { label: "Pendidikan Teknologi Informasi", id: "12" },
     { label: "Bimbingan Konseling", id: "13" },
 ];
+
+export const data_nilai = [
+    { label: "A", id: "1" },
+    { label: "A-", id: "2" },
+    { label: "B+", id: "3" },
+    { label: "B", id: "4" },
+    { label: "B-", id: "5" },
+    { label: "C+", id: "6" },
+    { label: "C", id: "7" },
+];

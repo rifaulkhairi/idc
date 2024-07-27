@@ -1,22 +1,24 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
-use App\Http\Requests\AddTempatPPLRequest;
+
 use App\Models\Supervisor;
+use App\Http\Controllers\Controller;
+use App\Models\LowonganPPL;
 use App\Models\TempatPPL;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
-class TempatPPLController extends Controller
+class LowonganPPLController extends Controller
 {
     public function index(){
-        $tempatppl = TempatPPL::leftJoin('supervisor_tbl', 'tempat_ppl_tbl.id_supervisor', '=', 'supervisor_tbl.supervisor_id')
-            ->select('tempat_ppl_tbl.*', 'supervisor_tbl.nama as nama_supervisor')
+        $lowonganppl = LowonganPPL::join('tempat_ppl_tbl', 'lowongan_ppl_tbl.id_tempat_ppl', '=', 'tempat_ppl_tbl.id_tempat')
+            ->join('prodi_tbl', 'prodi_tbl.id','=', 'lowongan_ppl_tbl.id_prodi')
+            ->select('lowongan_ppl_tbl.*', 'tempat_ppl_tbl.nama as nama_tempat_ppl', 'prodi_tbl.nama as nama_prodi')
             ->get(); // Execute the query to retrieve the results
                 
-        return Inertia::render('Admin/pages/tempatPPL/TempatPPL', ['tempat_ppl'=> $tempatppl]);
+        return Inertia::render('Admin/pages/lowonganPPL/LowonganPPL', ['lowongan_ppl'=> $lowonganppl]);
 
     }
 

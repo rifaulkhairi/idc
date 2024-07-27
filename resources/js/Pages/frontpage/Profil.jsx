@@ -18,13 +18,19 @@ import { provinsi, kabupaten, kecamatan, desa } from "daftar-wilayah-indonesia";
 
 import { styled, ThemeProvider, createTheme } from "@mui/material/styles";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PlaceIcon from "@mui/icons-material/Place";
 import SubjectIcon from "@mui/icons-material/Subject";
 import { AcademicCapIcon } from "@heroicons/react/24/outline";
-import { data_tempat_ppl, data_prodi } from "../../data";
-import { router } from "@inertiajs/react";
+import { data_tempat_ppl, data_prodi, data_nilai } from "../../data";
+import { router, useForm } from "@inertiajs/react";
 import { deepOrange, deepPurple } from "@mui/material/colors";
+import UpdateProfileInformation from "../Profile/Partials/UpdateProfileInformationForm";
+import DeleteUserForm from "../Profile/Partials/DeleteUserForm";
+import UpdatePasswordForm from "../Profile/Partials/UpdatePasswordForm";
+import PrimaryButton from "@/Components/PrimaryButton";
+import { Email } from "@mui/icons-material";
+import InputError from "@/Components/InputError";
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -108,43 +114,145 @@ const theme = createTheme({
     },
 });
 
-const Profil = () => {
-    const [states, setStates] = useState([]);
-    const [daftarProvinsi, setDaftarProvinsi] = useState([]);
-    const [daftarKabupaten, setDaftarKab] = useState();
-    const [daftarKec, setDaftarKec] = useState("");
-    const [daftarDesa, setDaftarDesa] = useState("");
+const Profil = ({ prodi_data, auth }) => {
+    const { data, setData, post, progress, errors } = useForm({
+        id_prodi: null,
+        provinsi: null,
+        kabupaten: null,
+        kecamatan: null,
+        desa: null,
+        provinsi_now: null,
+        kabupaten_now: null,
+        kecamatan_now: null,
+        desa_now: null,
+        ipk: null,
+        khs: null,
+        jk: null,
+        no_hp_wa: null,
+        nilai_microteaching: null,
+    });
 
     const [value, setValue] = useState(2);
-    const [tabValue, setTabValue] = useState(0);
+    const [nama, setNama] = useState(auth.user.name || "");
+
+    const [email, setEmail] = useState(auth.user.email || "");
+
+    const [nim, setNim] = useState(auth.user.username);
+
+    const [noHp, setNoHp] = useState();
+
     const [jenisKelamin, setJenisKelamin] = useState("");
-    const [prodi, setProdi] = useState("");
-    const [inputProdi, setInputProdi] = useState("");
-    const [prov, setProv] = useState("");
-    const [selectedProv, setSelectedProv] = useState();
 
-    const [kab, setKab] = useState("Pilih Kabupaten");
-    const [selectedKab, setSelectedKab] = useState("Pilih Kabupaten");
-    const [kec, setKec] = useState("pilih kecamatan");
-    const [selectedKec, setSelectedKec] = useState("");
-    const [kelurahan, setKelurahan] = useState("pilihDesa");
-    const [selectedDesa, setSelectedDesa] = useState("Pilih Kabupaten");
+    const [daftarProvinsiD, setDaftarProvinsiD] = useState([]);
+    const [daftarKabupatenD, setDaftarKabD] = useState([]);
+    const [daftarKecD, setDaftarKecD] = useState([]);
+    const [daftarDesaD, setDaftarDesaD] = useState([]);
 
-    const data = provinsi();
+    const [daftarProvinsi, setDaftarProvinsi] = useState([]);
+    const [daftarKabupaten, setDaftarKab] = useState([]);
+    const [daftarKec, setDaftarKec] = useState([]);
+    const [daftarDesa, setDaftarDesa] = useState([]);
+
+    const [provD, setProvD] = useState(null);
+    const [kabD, setKabD] = useState(null);
+    const [kecD, setKecD] = useState(null);
+    const [kelD, setKelD] = useState(null);
+
+    const [prov, setProv] = useState(null);
+    const [kab, setKab] = useState(null);
+    const [kec, setKec] = useState(null);
+    const [kel, setKel] = useState(null);
+
+    const [prodMhs, setProdiMhs] = useState(null);
+
+    const [nilaiMicro, setNilaiMicro] = useState(null);
+
+    const [ipk, setIPK] = useState(null);
+
+    function submit(e) {
+        e.preventDefault();
+        router.post("/profil", {
+            _method: "patch",
+            id_prodi: data.id_prodi,
+            provinsi: data.provinsi,
+            kabupaten: data.kabupaten,
+            kecamatan: data.kecamatan,
+            desa: data.desa,
+            provinsi_now: data.provinsi_now,
+            kabupaten_now: data.kabupaten_now,
+            kecamatan_now: data.kecamatan_now,
+            desa_now: data.desa_now,
+            ipk: data.ipk,
+            khs: data.khs,
+            jk: data.jk,
+            no_hp_wa: data.no_hp_wa,
+            nilai_microteaching: data.nilai_microteaching,
+        });
+    }
+
+    useEffect(() => {
+        setDaftarProvinsiD(provinsi());
+        setDaftarProvinsi(provinsi());
+    }, []);
+
+    const handleProvDChange = (event, value) => {
+        setProvD(value);
+        setDaftarKabD([]);
+        setDaftarKecD([]);
+        setDaftarDesaD([]);
+        setDaftarKabD(kabupaten(value?.kode || ""));
+        setKabD(null);
+        setKecD(null);
+        setKelD(null);
+        setData("provinsi", value.nama);
+    };
+
+    const handleKabDchange = (event, value) => {
+        setKabD(value);
+        setDaftarKecD(kecamatan(value?.kode || ""));
+        setKecD(null);
+        setKelD(null);
+        setData("kabupaten", value.nama);
+    };
+
+    const handleKecDchange = (event, value) => {
+        setKecD(value);
+        setDaftarDesaD(desa(value?.kode || ""));
+        setKelD(null);
+        setData("kecamatan", value.nama);
+        console.log(value.nama);
+    };
+
+    const handleProvChange = (event, value) => {
+        setProv(value);
+        setDaftarKab([]);
+        setDaftarKec([]);
+        setDaftarDesa([]);
+        setDaftarKab(kabupaten(value?.kode || ""));
+        setKab(null);
+        setKec(null);
+        setKel(null);
+        setData("provinsi_now", value.nama);
+    };
+
+    const handleKabchange = (event, value) => {
+        setKab(value);
+        setDaftarKec(kecamatan(value?.kode || ""));
+        setKec(null);
+        setKel(null);
+        setData("kabupaten_now", value.nama);
+    };
+
+    const handleKecchange = (event, value) => {
+        setKec(value);
+        setDaftarDesa(desa(value?.kode || ""));
+        setKelD(null);
+        setData("kecamatan_now", value.nama);
+    };
 
     const handleJKChange = (event, newValue) => {
         setJenisKelamin(event.target.value);
-    };
-    // console.log(data_prodi);
-
-    // console.log(provinsi());
-
-    const handleTabChange = (event, newValue) => {
-        setTabValue(newValue);
-    };
-
-    const changeCountry = (data) => {
-        setDaftarKab(kabupaten(data.kode));
+        setData("jk", event.target.value);
     };
 
     return (
@@ -182,308 +290,338 @@ const Profil = () => {
                 <div className="container">
                     <div className="h-32"></div>
 
-                    <section className="bg-white w-full">
+                    <section className="bg-white w-full rounded-md px-4 p-4">
                         <div>
                             <p className="text-neutral-600 font-bold text-lg">
-                                Profil
+                                Profil Information
                             </p>
-
-                            <hr className="my-5" />
+                            <p className="mt-1 text-sm text-gray-600">
+                                Silakan Memperbaharui informasi profil anda!
+                            </p>
                         </div>
-                        <div className="shadow-md rounded-md w-full">
+                        <div className="w-full">
                             <Box sx={{ width: "100%" }}>
-                                <Box
-                                    sx={{
-                                        borderBottom: 1,
-                                        borderColor: "divider",
-                                    }}
-                                >
-                                    <StyledTabs
-                                        value={tabValue}
-                                        onChange={handleTabChange}
-                                    >
-                                        <StyledTab
-                                            label="Profil"
-                                            {...a11yProps(0)}
-                                        />
-                                        <StyledTab
-                                            label="Data PPKPM"
-                                            {...a11yProps(0)}
-                                        />
-                                    </StyledTabs>
-                                </Box>
-                                <CustomTabPanel value={tabValue} index={0}>
-                                    <form method="post" action="/updateprofil">
-                                        <div className="flex h-full w-full flex-col gap-y-3">
-                                            <div className="flex w-full justify-center items-center mb-4">
-                                                <Avatar
-                                                    sx={{
-                                                        width: 100,
-                                                        height: 100,
-                                                        bgcolor:
-                                                            deepOrange[500],
-                                                    }}
-                                                >
-                                                    RU
-                                                </Avatar>
-                                            </div>
-                                            <div className="gap-x-5 flex w-full">
-                                                <TextField
-                                                    required
-                                                    id="outlined-required"
-                                                    label="Nama"
-                                                    defaultValue="Rifa Ulkhairi"
-                                                    sx={{ width: "100%" }}
-                                                />
-                                                <TextField
-                                                    required
-                                                    id="outlined-required"
-                                                    label="NIM"
-                                                    sx={{ width: "100%" }}
-                                                    defaultValue="200205002"
-                                                />
-                                            </div>
-                                            <div className="gap-x-5 flex w-full">
-                                                <TextField
-                                                    required
-                                                    id="outlined-required"
-                                                    label="email"
-                                                    defaultValue="200205002@student.ar-raniry.ac.id"
-                                                    sx={{ width: "100%" }}
-                                                />
-                                                <TextField
-                                                    required
-                                                    id="outlined-required"
-                                                    label="No HP/WA"
-                                                    sx={{ width: "100%" }}
-                                                    defaultValue="+62 895 0132 1609"
-                                                />
-                                            </div>
-                                            <div>
-                                                <Box sx={{ minWidth: 120 }}>
-                                                    <FormControl fullWidth>
-                                                        <InputLabel id="demo-simple-select-label">
-                                                            Jenis Kelamin
-                                                        </InputLabel>
-                                                        <Select
-                                                            labelId="demo-simple-select-label"
-                                                            id="demo-simple-select"
-                                                            value={jenisKelamin}
-                                                            label="Jenis Kelamin"
-                                                            onChange={
-                                                                handleJKChange
-                                                            }
-                                                        >
-                                                            <MenuItem
-                                                                value={
-                                                                    "Laki-laki"
-                                                                }
-                                                            >
-                                                                Laki-laki
-                                                            </MenuItem>
-                                                            <MenuItem
-                                                                value={
-                                                                    "Perempuan"
-                                                                }
-                                                            >
-                                                                Perempuan
-                                                            </MenuItem>
-                                                        </Select>
-                                                    </FormControl>
-                                                </Box>
-                                            </div>
-                                            <div>
-                                                <Autocomplete
-                                                    value={prodi}
-                                                    onChange={(
-                                                        event,
-                                                        newValue
-                                                    ) => {
-                                                        setProdi(newValue);
-                                                    }}
-                                                    inputValue={inputProdi}
-                                                    onInputChange={(
-                                                        event,
-                                                        newInputValue
-                                                    ) => {
-                                                        setInputProdi(
-                                                            newInputValue
-                                                        );
-                                                    }}
-                                                    id="prodi"
-                                                    options={data_prodi}
-                                                    getOptionLabel={
-                                                        data_prodi.label
-                                                    }
-                                                    renderInput={(params) => (
-                                                        <TextField
-                                                            {...params}
-                                                            label="prodi"
-                                                        />
-                                                    )}
-                                                ></Autocomplete>
-                                            </div>
-                                            <div>
-                                                <Autocomplete
-                                                    id="provinsi"
-                                                    value={prov}
-                                                    inputValue={selectedProv}
-                                                    onInputChange={(
-                                                        event,
-                                                        newInputValue
-                                                    ) => {
-                                                        setSelectedProv(
-                                                            newInputValue
-                                                            
-                                                        );
-                                                    }}
-                                                    options={provinsi()}
-                                                    getOptionLabel={(option) =>
-                                                        option.nama
-                                                    }
-                                                    onChange={(
-                                                        event,
-                                                        value
-                                                    ) => {
-                                                        setProv(value);
-                                                        setDaftarKab(
-                                                            kabupaten(
-                                                                value.kode
-                                                            )
-                                                        );
-                                                    }}
-                                                    renderInput={(params) => (
-                                                        <TextField
-                                                            {...params}
-                                                            label="Provinsi"
-                                                        />
-                                                    )}
-                                                ></Autocomplete>
-                                            </div>
-                                            <div>
-                                                <Autocomplete
-                                                    id="Kabupaten"
-                                                    value={kab}
-                                                    inputValue={selectedKab}
-                                                    onInputChange={(
-                                                        event,
-                                                        newInputValue
-                                                    ) => {
-                                                        setSelectedKab(
-                                                            newInputValue
-                                                        );
-                                                    }}
-                                                    options={
-                                                        daftarKabupaten == null
-                                                            ? [""]
-                                                            : daftarKabupaten
-                                                    }
-                                                    getOptionLabel={(option) =>
-                                                        option.nama
-                                                    }
-                                                    onChange={(
-                                                        event,
-                                                        value
-                                                    ) => {
-                                                        setKab(value);
-                                                        setDaftarKec(
-                                                            kecamatan(
-                                                                value.kode
-                                                            )
-                                                        );
-                                                    }}
-                                                    renderInput={(params) => (
-                                                        <TextField
-                                                            {...params}
-                                                            label="Kabupaten"
-                                                        />
-                                                    )}
-                                                ></Autocomplete>
-                                            </div>
-                                            <div>
-                                                <Autocomplete
-                                                    id="Kecamatan"
-                                                    value={kec}
-                                                    inputValue={selectedKec}
-                                                    onInputChange={(
-                                                        event,
-                                                        newInputValue
-                                                    ) => {
-                                                        setSelectedKec(
-                                                            newInputValue
-                                                        );
-                                                    }}
-                                                    options={
-                                                        daftarKec == null
-                                                            ? [""]
-                                                            : daftarKec
-                                                    }
-                                                    getOptionLabel={(option) =>
-                                                        option.nama
-                                                    }
-                                                    onChange={(
-                                                        event,
-                                                        value
-                                                    ) => {
-                                                        setKec(value);
-
-                                                        setDaftarDesa(
-                                                            desa(value.kode)
-                                                        );
-                                                    }}
-                                                    renderInput={(params) => (
-                                                        <TextField
-                                                            {...params}
-                                                            label="kecamatan"
-                                                        />
-                                                    )}
-                                                ></Autocomplete>
-                                            </div>
-                                            <div>
-                                                <Autocomplete
-                                                    id="desa"
-                                                    value={kelurahan}
-                                                    inputValue={selectedDesa}
-                                                    onInputChange={(
-                                                        event,
-                                                        newInputValue
-                                                    ) => {
-                                                        setSelectedDesa(
-                                                            newInputValue
-                                                        );
-                                                    }}
-                                                    options={
-                                                        daftarDesa == null
-                                                            ? [""]
-                                                            : daftarDesa
-                                                    }
-                                                    getOptionLabel={(option) =>
-                                                        option.nama
-                                                    }
-                                                    onChange={(
-                                                        event,
-                                                        value
-                                                    ) => {
-                                                        setKelurahan(value);
-                                                    }}
-                                                    renderInput={(params) => (
-                                                        <TextField
-                                                            {...params}
-                                                            label="Desa"
-                                                        />
-                                                    )}
-                                                ></Autocomplete>
-                                            </div>
+                                <form onSubmit={submit}>
+                                    <div className="flex h-full w-full flex-col gap-y-3">
+                                        <div className="flex w-full justify-center items-center mb-4">
+                                            <Avatar
+                                                sx={{
+                                                    width: 100,
+                                                    height: 100,
+                                                    bgcolor: deepOrange[500],
+                                                }}
+                                            >
+                                                RU
+                                            </Avatar>
                                         </div>
-                                    </form>
-                                    <div className="h-48"></div>
-                                </CustomTabPanel>
-                                <CustomTabPanel value={tabValue} index={1}>
-                                    Item Two
-                                </CustomTabPanel>
+                                        <div className="gap-x-5 flex w-full">
+                                            <TextField
+                                                id="outlined-required"
+                                                label="Nama"
+                                                disabled
+                                                value={nama}
+                                                sx={{ width: "100%" }}
+                                            />
+                                            <TextField
+                                                id="outlined-required"
+                                                label="NIM"
+                                                disabled
+                                                sx={{ width: "100%" }}
+                                                defaultValue="200205002"
+                                            />
+                                        </div>
+                                        <div className="gap-x-5 flex w-full">
+                                            <TextField
+                                                disabled
+                                                id="outlined-required"
+                                                label="email"
+                                                value={email}
+                                                sx={{ width: "100%" }}
+                                            />
+                                            <TextField
+                                                id="outlined-required"
+                                                label="No HP/WA"
+                                                onChange={(event, value) => {
+                                                    setData(
+                                                        "no_hp_wa",
+                                                        event.target.value
+                                                    );
+                                                }}
+                                                sx={{ width: "100%" }}
+                                            />
+                                        </div>
+                                        <div>
+                                            <Box sx={{ minWidth: 120 }}>
+                                                <FormControl fullWidth>
+                                                    <InputLabel id="demo-simple-select-label">
+                                                        Jenis Kelamin
+                                                    </InputLabel>
+                                                    <Select
+                                                        labelId="demo-simple-select-label"
+                                                        id="demo-simple-select"
+                                                        value={jenisKelamin}
+                                                        label="Jenis Kelamin"
+                                                        onChange={
+                                                            handleJKChange
+                                                        }
+                                                    >
+                                                        <MenuItem
+                                                            value={"Laki-laki"}
+                                                        >
+                                                            Laki-laki
+                                                        </MenuItem>
+                                                        <MenuItem
+                                                            value={"Perempuan"}
+                                                        >
+                                                            Perempuan
+                                                        </MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            </Box>
+                                        </div>
+
+                                        <div className="flex flex-col mt-3 gap-2">
+                                            <p className="text-xs text-gray-700">
+                                                Isi Alamatmu Sesuai KTP
+                                            </p>
+                                            <Autocomplete
+                                                id="provinsiD"
+                                                value={provD}
+                                                options={daftarProvinsiD}
+                                                getOptionLabel={(option) =>
+                                                    option.nama
+                                                }
+                                                onChange={handleProvDChange}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        {...params}
+                                                        label="Provinsi"
+                                                    />
+                                                )}
+                                            />
+                                            <Autocomplete
+                                                id="kabupatenD"
+                                                value={kabD}
+                                                options={daftarKabupatenD}
+                                                getOptionLabel={(option) =>
+                                                    option.nama
+                                                }
+                                                onChange={handleKabDchange}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        {...params}
+                                                        label="Kabupaten"
+                                                    />
+                                                )}
+                                            />
+
+                                            <Autocomplete
+                                                id="kecamatanD"
+                                                value={kecD}
+                                                options={daftarKecD}
+                                                getOptionLabel={(option) =>
+                                                    option.nama
+                                                }
+                                                onChange={handleKecDchange}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        {...params}
+                                                        label="Kecamatan"
+                                                    />
+                                                )}
+                                            />
+                                            <Autocomplete
+                                                id="desaD"
+                                                value={kelD}
+                                                options={daftarDesaD}
+                                                getOptionLabel={(option) =>
+                                                    option.nama
+                                                }
+                                                onChange={(event, value) => {
+                                                    setKelD(value);
+                                                    setData("desa", value.nama);
+                                                }}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        {...params}
+                                                        label="Desa"
+                                                    />
+                                                )}
+                                            />
+                                        </div>
+                                        <div className="flex flex-col mt-3 gap-2">
+                                            <p className="text-xs text-gray-700">
+                                                Isi sesui dengan alamat tempat
+                                                tinggalmu sekarang
+                                            </p>
+                                            <Autocomplete
+                                                id="provinsi"
+                                                value={prov}
+                                                options={daftarProvinsi}
+                                                getOptionLabel={(option) =>
+                                                    option.nama
+                                                }
+                                                onChange={handleProvChange}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        {...params}
+                                                        label="Provinsi"
+                                                    />
+                                                )}
+                                            />
+                                            <Autocomplete
+                                                id="kabupaten"
+                                                value={kab}
+                                                options={daftarKabupaten}
+                                                getOptionLabel={(option) =>
+                                                    option.nama
+                                                }
+                                                onChange={handleKabchange}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        {...params}
+                                                        label="Kabupaten"
+                                                    />
+                                                )}
+                                            />
+
+                                            <Autocomplete
+                                                id="Kecamatan"
+                                                value={kec}
+                                                options={daftarKec}
+                                                getOptionLabel={(option) =>
+                                                    option.nama
+                                                }
+                                                onChange={handleKecchange}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        {...params}
+                                                        label="Kecamatan"
+                                                    />
+                                                )}
+                                            />
+                                            <Autocomplete
+                                                id="desa"
+                                                value={kel}
+                                                options={daftarDesa}
+                                                getOptionLabel={(option) =>
+                                                    option.nama
+                                                }
+                                                onChange={(event, value) => {
+                                                    setKel(value);
+                                                    setData(
+                                                        "desa_now",
+                                                        value.nama
+                                                    );
+                                                }}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        {...params}
+                                                        label="Desa"
+                                                    />
+                                                )}
+                                            />
+                                        </div>
+                                        <div className="flex flex-col mt-3 gap-2">
+                                            <p className="text-xs text-gray-700">
+                                                Isi sesuai dengan data
+                                                akademikmu
+                                            </p>
+                                            <Autocomplete
+                                                id="prodi"
+                                                value={prodMhs}
+                                                options={prodi_data}
+                                                getOptionLabel={(option) =>
+                                                    option.nama
+                                                }
+                                                onChange={(event, value) => {
+                                                    setProdiMhs(value);
+                                                    setData(
+                                                        "id_prodi",
+                                                        value.id
+                                                    );
+                                                }}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        {...params}
+                                                        label="Prodi"
+                                                    />
+                                                )}
+                                            />
+                                            <Autocomplete
+                                                id="nilai_micro"
+                                                value={nilaiMicro}
+                                                options={data_nilai}
+                                                getOptionLabel={(option) =>
+                                                    option.label
+                                                }
+                                                onChange={(event, value) => {
+                                                    setNilaiMicro(value);
+                                                    setData(
+                                                        "nilai_microteaching",
+                                                        value.label
+                                                    );
+                                                }}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        {...params}
+                                                        label="Nilai Micro Teaching"
+                                                    />
+                                                )}
+                                            />
+                                            <TextField
+                                                type="number"
+                                                label="IPK"
+                                                value={ipk}
+                                                onChange={(event, value) => {
+                                                    setIPK(event.target.value);
+                                                    setData(
+                                                        "ipk",
+                                                        event.target.value
+                                                    );
+                                                }}
+                                            />
+                                            <InputError
+                                                message={errors.khs}
+                                                className="mt-2"
+                                            />
+
+                                            <input
+                                                type="file"
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "khs",
+                                                        e.target.files[0]
+                                                    )
+                                                }
+                                            />
+                                            {progress && (
+                                                <progress
+                                                    value={progress.percentage}
+                                                    max="100"
+                                                >
+                                                    {progress.percentage}%
+                                                </progress>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <PrimaryButton className="mt-4">
+                                        Save
+                                    </PrimaryButton>
+                                </form>
                             </Box>
                         </div>
                     </section>
+                    <div className="flex bg-white rounded-md mt-4 p-4">
+                        <UpdateProfileInformation />
+                    </div>
+                    <div className="flex bg-white rounded-md mt-4 p-4">
+                        <UpdatePasswordForm />
+                    </div>
+                    <div className="flex bg-white rounded-md mt-4 p-4">
+                        <DeleteUserForm />
+                    </div>
+                    <div className="h-96"></div>
                 </div>
             </main>
             <footer className="z-[100] ">

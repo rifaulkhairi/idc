@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\admin\LowonganPPLController;
+use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TempatPPLController;
 use Illuminate\Foundation\Application;
@@ -24,22 +26,23 @@ Route::get('/admin/addtempatmagang', function(){
 Route::get('/admin/dashboard', function(){
     return Inertia::render('Admin/Dashboard', []);
 })->name("admin.dashboard");
-Route::get('/admin/tempatppl', function(){
-    return Inertia::render('Admin/pages/tempatPPL/TempatPPL', []);
-})->name("admin.tempatppl");
 
-Route::get('/admin/addtempatppl', function(){
-    return Inertia::render('Admin/pages/addTempatPPL/AddTempatPPL', []);
-})->name("admin.tempatppl");
+
+
 
 Route::get('/admin/tempatppl', [TempatPPLController::class, 'index'])->name("admin.tempatppl");
 Route::get('/admin/addtempatppl', [TempatPPLController::class, 'addTempatPPL'])->name("admin.addtempatppl");
+Route::post('/admin/addtempatppl', [TempatPPLController::class, 'store'])->name("admin.addtempatppl");
+
+Route::get('admin/lowonganppl', [LowonganPPLController::class, 'index'])->name("admin.lowonganppl");
 
 
 
-Route::get('/profil', function(){
-    return Inertia::render('frontpage/Profil', []);
-})->name("profil");
+
+Route::get('/profil', [ProfilController::class, 'index'])->name("profil");
+Route::post('/profil', [ProfilController::class, 'store'])->name("profil.store");
+Route::patch('/profil', [ProfilController::class, 'update'])->name("profil.update");
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

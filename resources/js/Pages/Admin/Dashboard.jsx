@@ -48,7 +48,7 @@ const Dashboard = () => {
     return (
         <section className="main flex">
             <div className="sidebarWrapper w-[15%]">
-                <Sidebar tabId={0}/>
+                <Sidebar tabId={0} />
             </div>
             <div className="content-right w-[85%] px-3">
                 <Header></Header>
@@ -56,7 +56,7 @@ const Dashboard = () => {
                 <div>
                     <div className="flex w-full  h-full gap-y-2 flex-col">
                         <h1 className="font-semibold text-2xl">Dashboard</h1>
-                        <p className="text-sm text-gray-700 mb-4">
+                        <p className="text-md text-gray-700 mb-4">
                             Welcome back, Rifa! We've missed you. 🥰👋
                         </p>
                         <hr />
@@ -87,7 +87,7 @@ const Dashboard = () => {
                                             Tempat KPM
                                         </p>
                                         <p className="text-secondary text-xl">
-                                            1.999
+                                            19
                                         </p>
                                         <div className="flex text-xs gap-2 items-center text-gray-600">
                                             <span className="text-xs p-1 rounded-md text-green-600 bg-green-300/20">
@@ -106,7 +106,7 @@ const Dashboard = () => {
                                             Tempat PPL
                                         </p>
                                         <p className="text-secondary text-xl">
-                                            20
+                                            39
                                         </p>
                                         <div className="flex text-xs gap-2 items-center text-gray-600">
                                             <span className="text-xs p-1 rounded-md text-green-600 bg-green-300/20">
@@ -125,7 +125,7 @@ const Dashboard = () => {
                                             Jumlah Mahasiswa KPM
                                         </p>
                                         <p className="text-secondary text-xl">
-                                            20
+                                            423
                                         </p>
                                     </div>
                                     <div className="flex justify-center items-center w-[30%]">
@@ -138,7 +138,7 @@ const Dashboard = () => {
                                             Jumlah Mahasiswa PPL
                                         </p>
                                         <p className="text-secondary text-xl">
-                                            20
+                                            419
                                         </p>
                                     </div>
                                     <div className="flex justify-center items-center w-[30%]">
@@ -195,7 +195,6 @@ const Dashboard = () => {
                                         </AreaChart>
                                     </ResponsiveContainer>
                                 </div>
-                                
                             </div>
                         </div>
                     </div>

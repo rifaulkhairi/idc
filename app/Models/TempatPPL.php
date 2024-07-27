@@ -9,6 +9,8 @@ class TempatPPL extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['nama', 'provinsi', 'kabupaten', 'kecamatan', 'desa', 'id_supervisor'];
+
     protected $table = 'tempat_ppl_tbl';
     
 }

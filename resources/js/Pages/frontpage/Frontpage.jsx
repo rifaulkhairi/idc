@@ -17,6 +17,7 @@ import SubjectIcon from "@mui/icons-material/Subject";
 import { AcademicCapIcon } from "@heroicons/react/24/outline";
 import { data_tempat_ppl } from "../../data";
 import { router } from "@inertiajs/react";
+import { PiListStarBold } from "react-icons/pi";
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -143,8 +144,8 @@ const Frontpage = () => {
                 <div className="container">
                     <div className="h-32"></div>
 
-                    <section className="bg-white w-full">
-                        <div>
+                    <section className="bg-white w-full rounded-md px-4 pt-3">
+                        <div className="">
                             <p className="text-neutral-600 font-bold text-lg">
                                 Pilihan Tempat PPKPM
                             </p>
@@ -277,6 +278,12 @@ const Frontpage = () => {
                             label="Lamaran ku"
                             onClick={() => router.visit("lamaranku")}
                             icon={<SubjectIcon />}
+                        />
+                        <BottomNavigationAction
+                            color="primary"
+                            label="Nilai"
+                            onClick={() => router.visit("lamaranku")}
+                            icon={<PiListStarBold />}
                         />
                         <BottomNavigationAction
                             label="Profil"

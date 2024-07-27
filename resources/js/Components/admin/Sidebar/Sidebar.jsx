@@ -119,10 +119,11 @@ const Sidebar = ({ tabId }) => {
                                             Tempat PPL
                                         </Button>
                                     </Link>
-
-                                    <Button className="w-full">
-                                        Lowongan PPL
-                                    </Button>
+                                    <Link href="/admin/lowonganppl">
+                                        <Button className="w-full">
+                                            Lowongan PPL
+                                        </Button>
+                                    </Link>
                                     <Button className="w-full">
                                         Daftar Pelamar
                                     </Button>
