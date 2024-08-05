@@ -17,15 +17,15 @@ const Sidebar = ({ tabId }) => {
     };
     return (
         <>
-            <div className="sidebar fixed top-0 left-0 z-[100] w-[15%]">
+            <div className="sidebar z-[100] fixed w-72 shadow-md overflow-y-hidden">
                 <div className="logoWrapper py-3 pl-14 flex items-center gap-2">
                     <Link href="/admin/dashboard">
-                        <span className="font-semibold text-secondary text-4xl">
+                        <span className="font-semibold text-white text-4xl">
                             IDC
                         </span>
                     </Link>
                 </div>
-                <div className="sidebarTabs px-3 mt-4 ">
+                <div className="sidebarTabs px-3 mt-4">
                     <ul className="flex gap-4 flex-col">
                         <li>
                             <Link href="/admin/dashboard">
@@ -124,9 +124,11 @@ const Sidebar = ({ tabId }) => {
                                             Lowongan PPL
                                         </Button>
                                     </Link>
-                                    <Button className="w-full">
-                                        Daftar Pelamar
-                                    </Button>
+                                    <Link href="/admin/daftarpelamarppl">
+                                        <Button className="w-full">
+                                            Daftar Pelamar
+                                        </Button>
+                                    </Link>
                                     <Button className="w-full">
                                         Daftar Mahasiswa PPL
                                     </Button>

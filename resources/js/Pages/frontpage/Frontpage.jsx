@@ -1,9 +1,11 @@
 import {
+    Alert,
     Avatar,
     BottomNavigation,
     BottomNavigationAction,
     Box,
     Button,
+    Snackbar,
     Tab,
     Tabs,
 } from "@mui/material";
@@ -11,12 +13,12 @@ import PropTypes from "prop-types";
 
 import { styled, ThemeProvider, createTheme } from "@mui/material/styles";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PlaceIcon from "@mui/icons-material/Place";
 import SubjectIcon from "@mui/icons-material/Subject";
 import { AcademicCapIcon } from "@heroicons/react/24/outline";
 import { data_tempat_ppl } from "../../data";
-import { router } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import { PiListStarBold } from "react-icons/pi";
 
 function CustomTabPanel(props) {
@@ -101,7 +103,8 @@ const theme = createTheme({
     },
 });
 
-const Frontpage = () => {
+const Frontpage = ({ lowongan_ppl, flash }) => {
+    const [open, setOpen] = useState(false);
     const [value, setValue] = useState(0);
     const [tabValue, setTabValue] = useState(0);
 
@@ -109,8 +112,25 @@ const Frontpage = () => {
         setTabValue(newValue);
     };
 
+    const handleClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+
+        setOpen(false);
+    };
+
+    useEffect(() => {
+        if (flash.status === "gagal") {
+            setOpen(true);
+        } else {
+            setOpen(false);
+        }
+    }, [flash.status]);
+
     return (
         <ThemeProvider theme={theme}>
+            <Head title="Home" />
             <header className="fixed z-[100] flex w-full ">
                 <div className="flex w-full h-20 lg:px-20 md:px-5 bg-white shadow-md justify-between sm:px-2 backdrop-blur-sm bg-opacity-50">
                     <div className="flex py-3">
@@ -143,6 +163,20 @@ const Frontpage = () => {
             <main className="flex justify-center flex-col items-center w-full px-6  lg:px-10">
                 <div className="container">
                     <div className="h-32"></div>
+                    <Snackbar
+                        open={open}
+                        autoHideDuration={4000}
+                        onClose={handleClose}
+                    >
+                        <Alert
+                            onClose={handleClose}
+                            severity="error"
+                            variant="filled"
+                            sx={{ width: "100%" }}
+                        >
+                            {flash.message}
+                        </Alert>
+                    </Snackbar>
 
                     <section className="bg-white w-full rounded-md px-4 pt-3">
                         <div className="">
@@ -178,7 +212,7 @@ const Frontpage = () => {
                                 </Box>
                                 <CustomTabPanel value={tabValue} index={0}>
                                     <div className="flex h-full w-full flex-col gap-y-3">
-                                        {data_tempat_ppl.map((item) => (
+                                        {lowongan_ppl.map((item) => (
                                             <div className="h-full bg-white shadow-md w-full rounded-md p-2 flex gap-x-3 ">
                                                 <Avatar
                                                     src="https://upload.wikimedia.org/wikipedia/commons/a/af/Lambang_UIN_Ar-Raniry.png"
@@ -190,8 +224,7 @@ const Frontpage = () => {
                                                 <div className="flex flex-col lg:flex-row gap-y-3 w-full">
                                                     <div className="flex w-full flex-col ">
                                                         <p>
-                                                            PPL Matematika MAN 3
-                                                            Aceh Besar
+                                                            {`${item.name} ${item.nama_tempat_ppl}`}
                                                         </p>
                                                         <div className="flex gap-2">
                                                             <PlaceIcon
@@ -202,26 +235,25 @@ const Frontpage = () => {
                                                                 }}
                                                             />
                                                             <span className="font-normal text-xs text-neutral-500">
-                                                                Indrapuri, Aceh
-                                                                Besar
+                                                                {`${item.desa},${item.kecamatan},${item.kabupaten},${item.provinsi}`}
                                                             </span>
                                                         </div>
-                                                        <div className="flex gap-2">
+                                                        {/* <div className="flex gap-2">
                                                             <AcademicCapIcon className="text-neutral-500 size-4" />
                                                             <span className="font-normal text-xs text-neutral-500">
                                                                 IPK. 4
                                                             </span>
-                                                        </div>
+                                                        </div> */}
                                                     </div>
                                                     <div className="flex w-full flex-col gap-y-3">
                                                         <div>
                                                             <span className="bg-green-500/15 rounded-md py-1 px-2 text-secondary text-sm">
-                                                                quota 2
+                                                                {`quota ${item.qouta}`}
                                                             </span>
                                                         </div>
                                                         <div>
                                                             <span className="bg-blue-500/15 rounded-md py-1 px-2 text-blue-900 text-sm">
-                                                                terisi 1
+                                                                {`terisi ${item.terisi}`}
                                                             </span>
                                                         </div>
                                                     </div>
@@ -233,6 +265,12 @@ const Frontpage = () => {
                                                                 color: "white",
                                                                 textTransform:
                                                                     "capitalize",
+                                                            }}
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                router.post(
+                                                                    `/lamaranppl/${item.id}`
+                                                                );
                                                             }}
                                                         >
                                                             lamar
@@ -282,7 +320,7 @@ const Frontpage = () => {
                         <BottomNavigationAction
                             color="primary"
                             label="Nilai"
-                            onClick={() => router.visit("lamaranku")}
+                            // onClick={() => router.visit("lamaranku")}
                             icon={<PiListStarBold />}
                         />
                         <BottomNavigationAction

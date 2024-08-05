@@ -23,7 +23,7 @@ import PlaceIcon from "@mui/icons-material/Place";
 import SubjectIcon from "@mui/icons-material/Subject";
 import { AcademicCapIcon } from "@heroicons/react/24/outline";
 import { data_tempat_ppl, data_prodi, data_nilai } from "../../data";
-import { router, useForm } from "@inertiajs/react";
+import { Head, router, useForm } from "@inertiajs/react";
 import { deepOrange, deepPurple } from "@mui/material/colors";
 import UpdateProfileInformation from "../Profile/Partials/UpdateProfileInformationForm";
 import DeleteUserForm from "../Profile/Partials/DeleteUserForm";
@@ -114,7 +114,7 @@ const theme = createTheme({
     },
 });
 
-const Profil = ({ prodi_data, auth }) => {
+const Profil = ({ prodi_data, auth, data_mahasiswa }) => {
     const { data, setData, post, progress, errors } = useForm({
         id_prodi: null,
         provinsi: null,
@@ -139,9 +139,9 @@ const Profil = ({ prodi_data, auth }) => {
 
     const [nim, setNim] = useState(auth.user.username);
 
-    const [noHp, setNoHp] = useState();
+    const [noHp, setNoHp] = useState(data_mahasiswa.no_hp_wa || "");
 
-    const [jenisKelamin, setJenisKelamin] = useState("");
+    const [jenisKelamin, setJenisKelamin] = useState(data_mahasiswa.jk || "");
 
     const [daftarProvinsiD, setDaftarProvinsiD] = useState([]);
     const [daftarKabupatenD, setDaftarKabD] = useState([]);
@@ -153,21 +153,78 @@ const Profil = ({ prodi_data, auth }) => {
     const [daftarKec, setDaftarKec] = useState([]);
     const [daftarDesa, setDaftarDesa] = useState([]);
 
-    const [provD, setProvD] = useState(null);
-    const [kabD, setKabD] = useState(null);
-    const [kecD, setKecD] = useState(null);
-    const [kelD, setKelD] = useState(null);
+    const [provD, setProvD] = useState(
+        data_mahasiswa.provinsi
+            ? provinsi().find((p) => p.kode === data_mahasiswa.provinsi)
+            : null
+    );
 
-    const [prov, setProv] = useState(null);
-    const [kab, setKab] = useState(null);
-    const [kec, setKec] = useState(null);
-    const [kel, setKel] = useState(null);
+    const [kabD, setKabD] = useState(
+        data_mahasiswa.kabupaten
+            ? kabupaten(data_mahasiswa.provinsi).find(
+                  (p) => p.kode === data_mahasiswa.kabupaten
+              )
+            : null
+    );
+    const [kecD, setKecD] = useState(
+        data_mahasiswa.kecamatan
+            ? kecamatan(data_mahasiswa.kabupaten).find(
+                  (p) => p.kode === data_mahasiswa.kecamatan
+              )
+            : null
+    );
+    const [kelD, setKelD] = useState(
+        data_mahasiswa.desa
+            ? desa(data_mahasiswa.kecamatan).find(
+                  (p) => (p.kode = data_mahasiswa.desa)
+              )
+            : null
+    );
 
-    const [prodMhs, setProdiMhs] = useState(null);
+    const [prov, setProv] = useState(
+        data_mahasiswa.provinsi_now
+            ? provinsi().find((p) => p.kode === data_mahasiswa.provinsi_now)
+            : null
+    );
+    const [kab, setKab] = useState(
+        data_mahasiswa.kabupaten_now
+            ? kabupaten(data_mahasiswa.provinsi_now).find(
+                  (p) => p.kode === data_mahasiswa.kabupaten_now
+              )
+            : null
+    );
+    const [kec, setKec] = useState(
+        data_mahasiswa.kecamatan_now
+            ? kecamatan(data_mahasiswa.kabupaten_now).find(
+                  (p) => p.kode === data_mahasiswa.kecamatan_now
+              )
+            : null
+    );
+    const [kel, setKel] = useState(
+        data_mahasiswa.desa_now
+            ? desa(data_mahasiswa.kecamatan_now).find(
+                  (p) => (p.kode = data_mahasiswa.desa_now)
+              )
+            : null
+    );
 
-    const [nilaiMicro, setNilaiMicro] = useState(null);
+    const [prodMhs, setProdiMhs] = useState(
+        data_mahasiswa.id_prodi
+            ? data_prodi.find((p) => p.id === data_mahasiswa.id_prodi)
+            : null
+    );
 
-    const [ipk, setIPK] = useState(null);
+    const [nilaiMicro, setNilaiMicro] = useState(
+        data_mahasiswa.nilai_microteaching
+            ? data_nilai.find(
+                  (p) => p.id === data_mahasiswa.nilai_microteaching
+              )
+            : null
+    );
+
+    const [ipk, setIPK] = useState(
+        data_mahasiswa.ipk ? data_mahasiswa.ipk : null
+    );
 
     function submit(e) {
         e.preventDefault();
@@ -204,7 +261,7 @@ const Profil = ({ prodi_data, auth }) => {
         setKabD(null);
         setKecD(null);
         setKelD(null);
-        setData("provinsi", value.nama);
+        setData("provinsi", value.kode);
     };
 
     const handleKabDchange = (event, value) => {
@@ -212,15 +269,14 @@ const Profil = ({ prodi_data, auth }) => {
         setDaftarKecD(kecamatan(value?.kode || ""));
         setKecD(null);
         setKelD(null);
-        setData("kabupaten", value.nama);
+        setData("kabupaten", value.kode);
     };
 
     const handleKecDchange = (event, value) => {
         setKecD(value);
         setDaftarDesaD(desa(value?.kode || ""));
         setKelD(null);
-        setData("kecamatan", value.nama);
-        console.log(value.nama);
+        setData("kecamatan", value.kode);
     };
 
     const handleProvChange = (event, value) => {
@@ -232,7 +288,7 @@ const Profil = ({ prodi_data, auth }) => {
         setKab(null);
         setKec(null);
         setKel(null);
-        setData("provinsi_now", value.nama);
+        setData("provinsi_now", value.kode);
     };
 
     const handleKabchange = (event, value) => {
@@ -240,14 +296,14 @@ const Profil = ({ prodi_data, auth }) => {
         setDaftarKec(kecamatan(value?.kode || ""));
         setKec(null);
         setKel(null);
-        setData("kabupaten_now", value.nama);
+        setData("kabupaten_now", value.kode);
     };
 
     const handleKecchange = (event, value) => {
         setKec(value);
         setDaftarDesa(desa(value?.kode || ""));
         setKelD(null);
-        setData("kecamatan_now", value.nama);
+        setData("kecamatan_now", value.kode);
     };
 
     const handleJKChange = (event, newValue) => {
@@ -255,8 +311,18 @@ const Profil = ({ prodi_data, auth }) => {
         setData("jk", event.target.value);
     };
 
+    const getInitials = (name) => {
+        const nameArray = name.split(" ");
+        const initials = nameArray
+            .map((n) => n[0])
+            .join("")
+            .toUpperCase();
+        return initials;
+    };
+
     return (
         <ThemeProvider theme={theme}>
+            <Head title="Profil" />
             <header className="fixed z-[100] flex w-full ">
                 <div className="flex w-full h-20 lg:px-20 md:px-5 bg-white shadow-md justify-between sm:px-2 backdrop-blur-sm bg-opacity-50">
                     <div className="flex py-3">
@@ -311,54 +377,61 @@ const Profil = ({ prodi_data, auth }) => {
                                                     bgcolor: deepOrange[500],
                                                 }}
                                             >
-                                                RU
+                                                {getInitials(auth.user.name)}
                                             </Avatar>
                                         </div>
                                         <div className="gap-x-5 flex w-full">
                                             <TextField
-                                                id="outlined-required"
+                                                id="nama"
                                                 label="Nama"
+                                                required
                                                 disabled
                                                 value={nama}
                                                 sx={{ width: "100%" }}
                                             />
                                             <TextField
-                                                id="outlined-required"
+                                                id="nim"
                                                 label="NIM"
+                                                required
                                                 disabled
+                                                value={nim}
                                                 sx={{ width: "100%" }}
-                                                defaultValue="200205002"
                                             />
                                         </div>
                                         <div className="gap-x-5 flex w-full">
                                             <TextField
                                                 disabled
-                                                id="outlined-required"
+                                                required
+                                                id="email"
                                                 label="email"
                                                 value={email}
                                                 sx={{ width: "100%" }}
                                             />
                                             <TextField
-                                                id="outlined-required"
+                                                id="no_hp_wa"
                                                 label="No HP/WA"
+                                                required
                                                 onChange={(event, value) => {
+                                                    setNoHp(event.target.value);
                                                     setData(
                                                         "no_hp_wa",
                                                         event.target.value
                                                     );
                                                 }}
+                                                value={noHp}
                                                 sx={{ width: "100%" }}
                                             />
                                         </div>
                                         <div>
                                             <Box sx={{ minWidth: 120 }}>
                                                 <FormControl fullWidth>
-                                                    <InputLabel id="demo-simple-select-label">
+                                                    <InputLabel id="jeniskelamin">
                                                         Jenis Kelamin
                                                     </InputLabel>
                                                     <Select
-                                                        labelId="demo-simple-select-label"
+                                                        labelId="jeniskelamin"
                                                         id="demo-simple-select"
+                                                        required
                                                         value={jenisKelamin}
                                                         label="Jenis Kelamin"
                                                         onChange={
@@ -391,6 +464,7 @@ const Profil = ({ prodi_data, auth }) => {
                                                 getOptionLabel={(option) =>
                                                     option.nama
                                                 }
+                                                required
                                                 onChange={handleProvDChange}
                                                 renderInput={(params) => (
                                                     <TextField
@@ -407,6 +481,7 @@ const Profil = ({ prodi_data, auth }) => {
                                                     option.nama
                                                 }
                                                 onChange={handleKabDchange}
+                                                required
                                                 renderInput={(params) => (
                                                     <TextField
                                                         {...params}
@@ -418,6 +493,7 @@ const Profil = ({ prodi_data, auth }) => {
                                             <Autocomplete
                                                 id="kecamatanD"
                                                 value={kecD}
+                                                required
                                                 options={daftarKecD}
                                                 getOptionLabel={(option) =>
                                                     option.nama
@@ -437,9 +513,10 @@ const Profil = ({ prodi_data, auth }) => {
                                                 getOptionLabel={(option) =>
                                                     option.nama
                                                 }
+                                                required
                                                 onChange={(event, value) => {
                                                     setKelD(value);
-                                                    setData("desa", value.nama);
+                                                    setData("desa", value.kode);
                                                 }}
                                                 renderInput={(params) => (
                                                     <TextField
@@ -461,6 +538,7 @@ const Profil = ({ prodi_data, auth }) => {
                                                 getOptionLabel={(option) =>
                                                     option.nama
                                                 }
+                                                required
                                                 onChange={handleProvChange}
                                                 renderInput={(params) => (
                                                     <TextField
@@ -476,6 +554,7 @@ const Profil = ({ prodi_data, auth }) => {
                                                 getOptionLabel={(option) =>
                                                     option.nama
                                                 }
+                                                required
                                                 onChange={handleKabchange}
                                                 renderInput={(params) => (
                                                     <TextField
@@ -492,6 +571,7 @@ const Profil = ({ prodi_data, auth }) => {
                                                 getOptionLabel={(option) =>
                                                     option.nama
                                                 }
+                                                required
                                                 onChange={handleKecchange}
                                                 renderInput={(params) => (
                                                     <TextField
@@ -507,11 +587,12 @@ const Profil = ({ prodi_data, auth }) => {
                                                 getOptionLabel={(option) =>
                                                     option.nama
                                                 }
+                                                required
                                                 onChange={(event, value) => {
                                                     setKel(value);
                                                     setData(
                                                         "desa_now",
-                                                        value.nama
+                                                        value.kode
                                                     );
                                                 }}
                                                 renderInput={(params) => (
@@ -532,8 +613,9 @@ const Profil = ({ prodi_data, auth }) => {
                                                 value={prodMhs}
                                                 options={prodi_data}
                                                 getOptionLabel={(option) =>
-                                                    option.nama
+                                                    option.label
                                                 }
+                                                required
                                                 onChange={(event, value) => {
                                                     setProdiMhs(value);
                                                     setData(
@@ -555,11 +637,12 @@ const Profil = ({ prodi_data, auth }) => {
                                                 getOptionLabel={(option) =>
                                                     option.label
                                                 }
+                                                required
                                                 onChange={(event, value) => {
                                                     setNilaiMicro(value);
                                                     setData(
                                                         "nilai_microteaching",
-                                                        value.label
+                                                        value.id
                                                     );
                                                 }}
                                                 renderInput={(params) => (
@@ -573,6 +656,7 @@ const Profil = ({ prodi_data, auth }) => {
                                                 type="number"
                                                 label="IPK"
                                                 value={ipk}
+                                                required
                                                 onChange={(event, value) => {
                                                     setIPK(event.target.value);
                                                     setData(
@@ -586,7 +670,30 @@ const Profil = ({ prodi_data, auth }) => {
                                                 className="mt-2"
                                             />
 
+                                            <InputLabel id="khs">
+                                                KHS/Transkrip Nilai
+                                            </InputLabel>
+
+                                            <p className="text-xs text-gray-700">
+                                                Khs harus ada nim dan nilai
+                                                micro teaching
+                                            </p>
+
+                                            {data_mahasiswa.khs && (
+                                                <div className="flex w-full">
+                                                    <a
+                                                        className="px-2 bg-green-200/35 rounded-md py-2 text-sm"
+                                                        href={`/storage/${data_mahasiswa.khs}`}
+                                                        target="_blank"
+                                                    >
+                                                        Khs_{auth.user.username}
+                                                    </a>
+                                                </div>
+                                            )}
+
                                             <input
+                                                className="flex w-full"
+                                                labelId="khs"
                                                 type="file"
                                                 onChange={(e) =>
                                                     setData(
@@ -651,6 +758,12 @@ const Profil = ({ prodi_data, auth }) => {
                             label="Lamaran ku"
                             onClick={() => router.visit("lamaranku")}
                             icon={<SubjectIcon />}
+                        />
+                        <BottomNavigationAction
+                            color="primary"
+                            label="Nilai"
+                            // onClick={() => router.visit("lamaranku")}
+                            icon={<PiListStarBold />}
                         />
                         <BottomNavigationAction
                             label="Profil"

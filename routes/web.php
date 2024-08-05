@@ -1,6 +1,11 @@
 <?php
 
 use App\Http\Controllers\admin\LowonganPPLController;
+use App\Http\Controllers\DaftarPelamarPPLConroller;
+use App\Http\Controllers\DetailPelamarPPLContoller;
+use App\Http\Controllers\FrontpageController;
+use App\Http\Controllers\LamarankuController;
+use App\Http\Controllers\LamaranPPLController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TempatPPLController;
@@ -8,22 +13,13 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('frontpage/Frontpage', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-Route::get('/lamaranku', function(){
-    return Inertia::render('frontpage/Lamaranku', []);
-})->name("lamaranku");
+Route::get('/', [FrontpageController::class, 'index'])->name("frontpage");
+Route::get('/lamaranku', [LamarankuController::class, 'index'])->name("lamaranku");
 
-Route::get('/admin/addtempatmagang', function(){
+Route::get('/admin/addtempatmagang', function () {
     return Inertia::render('admin/Lamaranku', []);
-})->name("lamaranku");
-Route::get('/admin/dashboard', function(){
+})->name("addlamaran");
+Route::get('/admin/dashboard', function () {
     return Inertia::render('Admin/Dashboard', []);
 })->name("admin.dashboard");
 
@@ -35,6 +31,9 @@ Route::get('/admin/addtempatppl', [TempatPPLController::class, 'addTempatPPL'])-
 Route::post('/admin/addtempatppl', [TempatPPLController::class, 'store'])->name("admin.addtempatppl");
 
 Route::get('admin/lowonganppl', [LowonganPPLController::class, 'index'])->name("admin.lowonganppl");
+Route::get('admin/daftarpelamarppl', [DaftarPelamarPPLConroller::class, 'index'])->name("admin.daftarpelamarppl");
+Route::get('/admin/detailpelamarppl/{id}', [DetailPelamarPPLContoller::class, 'show'])->name("admin.detailpelamar");
+Route::patch('/admin/handlelamaran/{id}', [DetailPelamarPPLContoller::class, 'handlelamaran'])->name("admin.handlelamaran");
 
 
 
@@ -42,6 +41,9 @@ Route::get('admin/lowonganppl', [LowonganPPLController::class, 'index'])->name("
 Route::get('/profil', [ProfilController::class, 'index'])->name("profil");
 Route::post('/profil', [ProfilController::class, 'store'])->name("profil.store");
 Route::patch('/profil', [ProfilController::class, 'update'])->name("profil.update");
+
+Route::post('/lamaranppl/{id}', [LamaranPPLController::class, 'store'])->name("lamaranppl.store");
+
 
 
 Route::get('/dashboard', function () {
@@ -54,4 +56,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

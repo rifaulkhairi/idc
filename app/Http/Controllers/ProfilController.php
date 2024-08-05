@@ -12,24 +12,27 @@ use Inertia\Inertia;
 
 class ProfilController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $prodi = Prodi::get();
-        return Inertia::render('frontpage/Profil', ['prodi_data'=> $prodi]);
+        $data_mahasiswa = Mahasiswa::where('nim', Auth::user()->username)->first();
+        return Inertia::render('frontpage/Profil', [
+            'prodi_data' => $prodi,
+            'data_mahasiswa' => $data_mahasiswa
 
-
+        ]);
     }
 
-    public function store(Request $request){
-        
-
-
+    public function store(Request $request)
+    {
     }
 
-    public function update(Request $request) {
+    public function update(Request $request)
+    {
 
         $mahasiswa = Mahasiswa::where('nim', Auth::user()->username)->first();
         // dd($request);
-        
+
         // dd($mahasiswa);
         $data = [
             'id_prodi' => $request->id_prodi,
@@ -53,10 +56,10 @@ class ProfilController extends Controller
             $file = $request->file('khs');
             $extension = $file->getClientOriginalExtension();
             $customFilename = 'khs_' . Auth::user()->username . '.' . $extension;
-        
+
             // Store the file with the custom filename
-            $path = $file->storeAs('khs', $customFilename, 'public');
-        
+            $path = Storage::putFile('cover', $file);
+
             // Save the file path to the data array to be updated in the database
             $data['khs'] = $path;
         }
@@ -64,10 +67,7 @@ class ProfilController extends Controller
 
         $mahasiswa->update($data);
 
-        // to_route('profil');
+
         return redirect()->route('profil')->with('message', 'Profile updated successfully.');
-
-
-
     }
 }

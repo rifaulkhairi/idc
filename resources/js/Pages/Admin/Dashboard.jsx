@@ -47,13 +47,13 @@ const data = [
 const Dashboard = () => {
     return (
         <section className="main flex">
-            <div className="sidebarWrapper w-[15%]">
+            <div className="sidebarWrapper flex bg-[#1c2434]">
                 <Sidebar tabId={0} />
             </div>
-            <div className="content-right w-[85%] px-3">
+            <div className="flex-grow ml-72">
                 <Header></Header>
                 <div className="space"></div>
-                <div>
+                <div className="px-3 mt-20">
                     <div className="flex w-full  h-full gap-y-2 flex-col">
                         <h1 className="font-semibold text-2xl">Dashboard</h1>
                         <p className="text-md text-gray-700 mb-4">

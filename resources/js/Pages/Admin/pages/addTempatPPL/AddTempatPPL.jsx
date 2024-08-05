@@ -76,18 +76,18 @@ const AddTempatPPL = ({ daftar_supervisor }) => {
 
     return (
         <section className="main flex">
-            <div className="sidebarWrapper w-[15%]">
+            <div className="sidebarWrapper flex">
                 <Sidebar tabId={2} />
             </div>
-            <div className="content-right w-[85%] px-3">
+            <div className="flex w-full ml-72">
                 <Header />
                 <div className="space"></div>
-                <div>
+                <div className="flex flex-col w-full px-3 mt-20">
                     <Breadcrumbs aria-label="breadcrumb">
                         <Link href="/admin/tempatppl">Tempat PPL</Link>
                         <Typography>Tambah Tempat PPL</Typography>
                     </Breadcrumbs>
-                    <div className="mt-3 flex">
+                    <div className="felx w-full mt-3 ">
                         <form
                             className="flex flex-col w-full gap-y-4"
                             onSubmit={onSubmit}

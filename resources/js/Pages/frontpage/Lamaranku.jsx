@@ -16,7 +16,8 @@ import PlaceIcon from "@mui/icons-material/Place";
 import SubjectIcon from "@mui/icons-material/Subject";
 import { AcademicCapIcon } from "@heroicons/react/24/outline";
 import { data_tempat_ppl } from "../../data";
-import { router } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
+import { PiListStarBold } from "react-icons/pi";
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -100,7 +101,7 @@ const theme = createTheme({
     },
 });
 
-const Lamaranku = () => {
+const Lamaranku = ({ lamarankuppl }) => {
     const [value, setValue] = useState(1);
     const [tabValue, setTabValue] = useState(0);
 
@@ -110,6 +111,7 @@ const Lamaranku = () => {
 
     return (
         <ThemeProvider theme={theme}>
+            <Head title="Lamaran Ku" />
             <header className="fixed z-[100] flex w-full ">
                 <div className="flex w-full h-20 lg:px-20 md:px-5 bg-white shadow-md justify-between sm:px-2 backdrop-blur-sm bg-opacity-50">
                     <div className="flex py-3">
@@ -143,7 +145,7 @@ const Lamaranku = () => {
                 <div className="container">
                     <div className="h-32"></div>
 
-                    <section className="bg-white w-full">
+                    <section className="bg-white w-full rounded-md px-4 pt-3">
                         <div>
                             <p className="text-neutral-600 font-bold text-lg">
                                 Riwayat lamaran PPKPM
@@ -175,20 +177,19 @@ const Lamaranku = () => {
                                 </Box>
                                 <CustomTabPanel value={tabValue} index={0}>
                                     <div className="flex h-full w-full flex-col gap-y-3">
-                                        {data_tempat_ppl.map((item) => (
+                                        {lamarankuppl.map((item) => (
                                             <div className="h-full bg-white shadow-md w-full rounded-md p-2 flex gap-x-3 ">
-                                                <Avatar
+                                                {/* <Avatar
                                                     src="https://upload.wikimedia.org/wikipedia/commons/a/af/Lambang_UIN_Ar-Raniry.png"
                                                     sx={{
                                                         width: 56,
                                                         height: 56,
                                                     }}
-                                                ></Avatar>
+                                                ></Avatar> */}
                                                 <div className="flex flex-col lg:flex-row gap-y-3 w-full">
                                                     <div className="flex w-full flex-col ">
                                                         <p>
-                                                            PPL Matematika MAN 3
-                                                            Aceh Besar
+                                                            {`${item.name} ${item.nama}`}
                                                         </p>
                                                         <div className="flex gap-2">
                                                             <PlaceIcon
@@ -199,41 +200,38 @@ const Lamaranku = () => {
                                                                 }}
                                                             />
                                                             <span className="font-normal text-xs text-neutral-500">
-                                                                Indrapuri, Aceh
-                                                                Besar
+                                                                {`${item.desa},${item.kecamatan},${item.kabupaten},${item.provinsi}`}
                                                             </span>
                                                         </div>
-                                                        <div className="flex gap-2">
+                                                        {/* <div className="flex gap-2">
                                                             <AcademicCapIcon className="text-neutral-500 size-4" />
                                                             <span className="font-normal text-xs text-neutral-500">
                                                                 IPK. 4
                                                             </span>
-                                                        </div>
+                                                        </div> */}
                                                     </div>
-                                                    <div className="flex w-full flex-col gap-y-3">
+                                                    <div className="flex w-full flex-wrap gap-y-3 gap-x-3">
                                                         <div>
                                                             <span className="bg-green-500/15 rounded-md py-1 px-2 text-secondary text-sm">
-                                                                quota 2
+                                                                {`quota ${item.qouta}`}
                                                             </span>
                                                         </div>
                                                         <div>
                                                             <span className="bg-blue-500/15 rounded-md py-1 px-2 text-blue-900 text-sm">
-                                                                terisi 1
+                                                                {`terisi ${item.terisi}`}
+                                                            </span>
+                                                        </div>
+                                                        <div>
+                                                            <span className="bg-blue-500/15 rounded-md py-1 px-2 text-blue-900 text-sm">
+                                                                {`pelamar ${item.jumlahpelamar}`}
                                                             </span>
                                                         </div>
                                                     </div>
+
                                                     <div className="w-full flex-[0.1]">
-                                                        <Button
-                                                            color="primary"
-                                                            variant="contained"
-                                                            sx={{
-                                                                color: "white",
-                                                                textTransform:
-                                                                    "capitalize",
-                                                            }}
-                                                        >
-                                                            lamar
-                                                        </Button>
+                                                        <span className="bg-orange-500/15 rounded-md py-1 px-2 text-gray-00 text-sm">
+                                                            {`${item.status}`}
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -275,6 +273,12 @@ const Lamaranku = () => {
                             color="primary"
                             label="Lamaran ku"
                             icon={<SubjectIcon />}
+                        />
+                        <BottomNavigationAction
+                            color="primary"
+                            label="Nilai"
+                            // onClick={() => router.visit("lamaranku")}
+                            icon={<PiListStarBold />}
                         />
                         <BottomNavigationAction
                             label="Profil"
