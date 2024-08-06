@@ -5,11 +5,11 @@ import { FaAngleRight } from "react-icons/fa6";
 
 import { AiOutlineDatabase } from "react-icons/ai";
 import { LuUsers2 } from "react-icons/lu";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 
 const Sidebar = ({ tabId }) => {
     const [activeTab, setActiveTab] = useState(tabId);
-    const [isToggleSubmenu, setIsToggleSubmenu] = useState(true);
+    const [isToggleSubmenu, setIsToggleSubmenu] = useState(false);
 
     const isOpenSubmenu = (index) => {
         setActiveTab(index);
@@ -52,7 +52,7 @@ const Sidebar = ({ tabId }) => {
                                 <span className="icon w-[30px] h-[30px] flex items-center justify-center rounded-md">
                                     <AiOutlineDatabase />
                                 </span>
-                                KPM
+                                Data
                                 <span
                                     className={`arrow ml-auto w-[25px]  h-[25px] flex items-center justify-center ${
                                         activeTab === 1 &&
@@ -72,14 +72,16 @@ const Sidebar = ({ tabId }) => {
                                 }`}
                             >
                                 <div className="submenu">
-                                    <Button className="w-full">
-                                        Tempat KPM
+                                    <Button
+                                        className="w-full"
+                                        onClick={() => {
+                                            router.visit("/admin/daftarprodi");
+                                        }}
+                                    >
+                                        Prodi
                                     </Button>
                                     <Button className="w-full">
-                                        Daftar Pelamar
-                                    </Button>
-                                    <Button className="w-full">
-                                        Data Mahasiswa KPM
+                                        Sertifikat
                                     </Button>
                                 </div>
                             </div>
@@ -94,7 +96,7 @@ const Sidebar = ({ tabId }) => {
                                 <span className="icon w-[30px] h-[30px] flex items-center justify-center rounded-md">
                                     <AiOutlineDatabase />
                                 </span>
-                                PPL
+                                KPM
                                 <span
                                     className={`arrow ml-auto w-[25px]  h-[25px] flex items-center justify-center ${
                                         activeTab === 2 &&
@@ -114,27 +116,17 @@ const Sidebar = ({ tabId }) => {
                                 }`}
                             >
                                 <div className="submenu">
-                                    <Link href="/admin/tempatppl">
-                                        <Button className="w-full">
-                                            Tempat PPL
-                                        </Button>
-                                    </Link>
-                                    <Link href="/admin/lowonganppl">
-                                        <Button className="w-full">
-                                            Lowongan PPL
-                                        </Button>
-                                    </Link>
-                                    <Link href="/admin/daftarpelamarppl">
-                                        <Button className="w-full">
-                                            Daftar Pelamar
-                                        </Button>
-                                    </Link>
                                     <Button className="w-full">
-                                        Daftar Mahasiswa PPL
+                                        Tempat KPM
+                                    </Button>
+
+                                    <Button className="w-full">
+                                        Data Mahasiswa KPM
                                     </Button>
                                 </div>
                             </div>
                         </li>
+
                         <li>
                             <Button
                                 className={`w-full flex items-center justify-center ${
@@ -143,9 +135,9 @@ const Sidebar = ({ tabId }) => {
                                 onClick={() => isOpenSubmenu(3)}
                             >
                                 <span className="icon w-[30px] h-[30px] flex items-center justify-center rounded-md">
-                                    <LuUsers2 />
+                                    <AiOutlineDatabase />
                                 </span>
-                                Pengguna
+                                PPL
                                 <span
                                     className={`arrow ml-auto w-[25px]  h-[25px] flex items-center justify-center ${
                                         activeTab === 3 &&
@@ -160,6 +152,50 @@ const Sidebar = ({ tabId }) => {
                             <div
                                 className={`submenuWrapper ${
                                     activeTab === 3 && isToggleSubmenu === true
+                                        ? "colapse"
+                                        : "colapsed"
+                                }`}
+                            >
+                                <div className="submenu">
+                                    <Button className="w-full">
+                                        Tempat PPL
+                                    </Button>
+
+                                    <Button className="w-full">
+                                        Lowongan PPL
+                                    </Button>
+
+                                    <Button className="w-full">
+                                        Daftar Mahasiswa PPL
+                                    </Button>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <Button
+                                className={`w-full flex items-center justify-center ${
+                                    activeTab === 4 ? "active" : ""
+                                }`}
+                                onClick={() => isOpenSubmenu(3)}
+                            >
+                                <span className="icon w-[30px] h-[30px] flex items-center justify-center rounded-md">
+                                    <LuUsers2 />
+                                </span>
+                                Pengguna
+                                <span
+                                    className={`arrow ml-auto w-[25px]  h-[25px] flex items-center justify-center ${
+                                        activeTab === 4 &&
+                                        isToggleSubmenu === true
+                                            ? "rotate"
+                                            : ""
+                                    }`}
+                                >
+                                    <FaAngleRight />
+                                </span>
+                            </Button>
+                            <div
+                                className={`submenuWrapper ${
+                                    activeTab === 4 && isToggleSubmenu === true
                                         ? "colapse"
                                         : "colapsed"
                                 }`}

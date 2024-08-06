@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-class FrontpageController extends Controller
+class HomeControler extends Controller
 {
     public function index()
     {
@@ -18,7 +18,7 @@ class FrontpageController extends Controller
         //     ->get(); // Execute the query to retrieve the results
 
 
-        return Inertia::render('frontpage/Frontpage', [
+        return Inertia::render('frontpage/Home', [
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
             'laravelVersion' => Application::VERSION,

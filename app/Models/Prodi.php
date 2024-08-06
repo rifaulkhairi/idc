@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Prodi extends Model
 {
     use HasFactory;
+    protected $fillable = ['name'];
+
 
     protected $table = 'prodi_tbl';
 }

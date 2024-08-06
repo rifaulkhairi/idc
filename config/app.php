@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Laravel\ServiceProvider;
+
 return [
 
     /*
@@ -40,6 +42,7 @@ return [
     */
 
     'debug' => (bool) env('APP_DEBUG', false),
+
 
     /*
     |--------------------------------------------------------------------------

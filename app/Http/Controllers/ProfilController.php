@@ -14,13 +14,9 @@ class ProfilController extends Controller
 {
     public function index()
     {
-        $prodi = Prodi::get();
-        $data_mahasiswa = Mahasiswa::where('nim', Auth::user()->username)->first();
-        return Inertia::render('frontpage/Profil', [
-            'prodi_data' => $prodi,
-            'data_mahasiswa' => $data_mahasiswa
 
-        ]);
+        // $data_mahasiswa = Mahasiswa::where('nim', Auth::user()->username)->first();
+        return Inertia::render('frontpage/Profil', []);
     }
 
     public function store(Request $request)

@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('supervisor_tbl', function(Blueprint $table){
-            $table->id('supervisor_id');
-            $table->string('nama');
-            $table->string('no_hp', 50);
-
-
+        Schema::create('sekolah_tbl', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('provinsi');
+            $table->string('kabupaten');
+            $table->string('kecamatan');
+            $table->string('desa');
         });
     }
 
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('sekolah_tbl');
     }
 };
