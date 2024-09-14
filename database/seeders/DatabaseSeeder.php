@@ -21,12 +21,9 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $users = [
-            ['name' => 'Rifa Ulkhairi', 'email' => 'rifa@gmail.com', 'username' => 'rifa@gmail.com', 'role' => 'admin'],
-            ['name' => 'Aiyub', 'email' => 'aiyub@gmail.com', 'username' => 'aiyub@gmail.com', 'role' => 'admin'],
-            ['name' => 'Haris', 'email' => 'haris@gmail.com', 'username' => 'haris@gmail.com', 'role' => 'supervisor'],
-            ['name' => 'Jufprisal', 'email' => 'jufprisal@gmail.com', 'username' => 'jufprisal@gmail.com', 'role' => 'supervisor'],
-            ['name' => 'Rijal', 'email' => 'rijal@gmail.com', 'username' => 'rijal@gmail.com', 'role' => 'user'],
-            ['name' => 'Riski', 'email' => 'riski@gmail.com', 'username' => 'riski@gmail.com', 'role' => 'user'],
+            ['name' => 'Rifa Ulkhairi', 'email' => 'rifaulkhairi05@gmail.com', 'username' => 'rifaulkhairi05@gmail.com', 'role' => 'admin'],
+            ['name' => 'Rifa Ulkhairi', 'email' => 'supervisor@gmail.com', 'username' => '200205002', 'role' => 'supervisor'],
+
 
         ];
 

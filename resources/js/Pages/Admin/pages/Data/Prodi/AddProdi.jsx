@@ -3,10 +3,10 @@ import React from "react";
 import Sidebar from "@/Components/admin/Sidebar/Sidebar";
 import Header from "@/Components/admin/Header/Header";
 import MUIDataTable from "mui-datatables";
-import { Button, IconButton } from "@mui/material";
+import { Breadcrumbs, Button, IconButton } from "@mui/material";
 import { MdDelete } from "react-icons/md";
 import { GrFormView } from "react-icons/gr";
-import { Head, router, useForm } from "@inertiajs/react";
+import { Head, Link, router, useForm } from "@inertiajs/react";
 
 const AddProdi = () => {
     const { data, setData, post, progress, errors } = useForm({
@@ -25,11 +25,15 @@ const AddProdi = () => {
             <div className="sidebarWrapper flex">
                 <Sidebar tabId={1} />
             </div>
-            <div className="flex w-full ml-72">
+            <div className="flex w-full ml-72 flex-col">
                 <Header></Header>
                 <div className="space"></div>
-                <div className="px-3 mt-20">
-                    <div className="flex w-full justify-end py-2">
+                <div className="px-3">
+                    <Breadcrumbs>
+                        <Link href="/admin/daftarprodi">List Prodi</Link>
+                        <Link>Import Prodi</Link>
+                    </Breadcrumbs>
+                    <div className="flex w-full  py-2">
                         <form
                             className="flex flex-col gap-y-3"
                             onSubmit={submit}

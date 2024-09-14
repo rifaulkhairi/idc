@@ -45,53 +45,6 @@ CustomTabPanel.propTypes = {
     value: PropTypes.number.isRequired,
 };
 
-function a11yProps(index) {
-    return {
-        id: `simple-tab-${index}`,
-        "aria-controls": `simple-tabpanel-${index}`,
-    };
-}
-
-const StyledTabs = styled((props) => (
-    <Tabs
-        {...props}
-        TabIndicatorProps={{
-            children: <span className="MuiTabs-indicatorSpan" />,
-        }}
-    />
-))({
-    "& .MuiTabs-indicator": {
-        display: "flex",
-        justifyContent: "center",
-        backgroundColor: "transparent",
-    },
-    "& .MuiTabs-indicatorSpan": {
-        maxWidth: 40,
-        width: "100%",
-        backgroundColor: "#008A01",
-    },
-});
-
-const StyledTab = styled((props) => <Tab disableRipple {...props} />)(
-    ({ theme }) => ({
-        textTransform: "none",
-        fontWeight: theme.typography.fontWeightRegular,
-        fontSize: theme.typography.pxToRem(15),
-        marginRight: theme.spacing(1),
-        color: "#b2b2b2",
-        "&.Mui-selected": {
-            color: "#008A01",
-        },
-        "&.Mui-focusVisible": {
-            backgroundColor: "#006e01",
-        },
-        "&:hover": {
-            color: "#008A01",
-            opacity: 1,
-        },
-    })
-);
-
 const theme = createTheme({
     palette: {
         primary: {
@@ -103,30 +56,8 @@ const theme = createTheme({
     },
 });
 
-const Frontpage = ({ lowongan_ppl, flash }) => {
-    const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(0);
-    const [tabValue, setTabValue] = useState(0);
-
-    const handleTabChange = (event, newValue) => {
-        setTabValue(newValue);
-    };
-
-    const handleClose = (event, reason) => {
-        if (reason === "clickaway") {
-            return;
-        }
-
-        setOpen(false);
-    };
-
-    useEffect(() => {
-        if (flash.status === "gagal") {
-            setOpen(true);
-        } else {
-            setOpen(false);
-        }
-    }, [flash.status]);
+const Profil = ({ lowongan_ppl, flash }) => {
+    const [value, setValue] = useState(2);
 
     return (
         <ThemeProvider theme={theme}>
@@ -158,16 +89,12 @@ const Frontpage = ({ lowongan_ppl, flash }) => {
                     <section className="bg-white w-full rounded-md px-4 pt-3">
                         <div className="">
                             <p className="text-neutral-600 font-bold text-lg">
-                                Selamat Datang
+                                Profil
                             </p>
                             <p className="text-neutral-600 font-normal text-xs">
                                 Welcome back, Rifa! We've missed you 👋
                             </p>
                             <hr className="my-5" />
-                        </div>
-                        <div className="w-full pb-8">
-                            PPKPM Sedang berlangsung silakan cek berkala untuk
-                            mengetahui nilai
                         </div>
                     </section>
                 </div>
@@ -191,13 +118,14 @@ const Frontpage = ({ lowongan_ppl, flash }) => {
                     >
                         <BottomNavigationAction
                             label="Home"
+                            onClick={() => router.visit("/")}
                             icon={<PlaceIcon />}
                         />
 
                         <BottomNavigationAction
                             color="primary"
                             label="Nilai"
-                            // onClick={() => router.visit("lamaranku")}
+                            onClick={() => router.visit("nilai")}
                             icon={<PiListStarBold />}
                         />
                         <BottomNavigationAction
@@ -212,4 +140,4 @@ const Frontpage = ({ lowongan_ppl, flash }) => {
     );
 };
 
-export default Frontpage;
+export default Profil;

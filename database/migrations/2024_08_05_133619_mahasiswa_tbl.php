@@ -20,11 +20,14 @@ return new class extends Migration
             $table->unsignedBigInteger('id_lowongan_ppl')->nullable();
             $table->double('nilai_supervisor_ppl')->nullable();
             $table->double('nilai_supervisor_kpm')->nullable();
-            $table->double('nilai_keuchik');
-            $table->double('nilai_pamong');
+            $table->double('nilai_keuchik')->nullable();
+            $table->double('nilai_pamong')->nullable();
+            $table->timestamps();
+            $table->string('link_instrument_penilaian')->nullable();
 
 
-            $table->foreign('nim')->references('username')->on('users');
+
+            $table->foreign('nim')->references('username')->on('users')->onDelete('cascade');
             $table->foreign('id_prodi')->references('id')->on('prodi_tbl')->onDelete('set null');
             $table->foreign('id_tempat_kpm')->references('id')->on('tempat_kpm_tbl')->onDelete('set null');
             $table->foreign('id_lowongan_ppl')->references('id')->on('ppl_tbl')->onDelete('set null');

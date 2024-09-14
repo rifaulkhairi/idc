@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('username');
             $table->string('no_hp_wa');
+            $table->timestamps();
         });
     }
 

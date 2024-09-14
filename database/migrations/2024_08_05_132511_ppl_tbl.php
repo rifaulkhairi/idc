@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->unsignedBigInteger('id_prodi')->nullable();
             $table->unsignedBigInteger('id_sekolah')->nullable();
+            $table->timestamps();
+
 
             $table->foreign('id_sekolah')->references('id')->on('sekolah_tbl')->onDelete('set null');
             $table->foreign('id_prodi')->references('id')->on('prodi_tbl')->onDelete('set null');

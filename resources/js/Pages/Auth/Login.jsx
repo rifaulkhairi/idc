@@ -2,10 +2,21 @@ import { useEffect } from "react";
 import Checkbox from "@/Components/Checkbox";
 import GuestLayout from "@/Layouts/GuestLayout";
 import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { MdOutlineVisibility } from "react-icons/md";
+import { MdOutlineVisibilityOff } from "react-icons/md";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+    FormControl,
+    IconButton,
+    InputAdornment,
+    InputLabel,
+    OutlinedInput,
+    TextField,
+} from "@mui/material";
+import { useState } from "react";
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -14,6 +25,7 @@ export default function Login({ status, canResetPassword }) {
         password: "",
         remember: false,
     });
+    const [showPassword, setShowPassword] = useState(false);
 
     useEffect(() => {
         return () => {
@@ -27,6 +39,8 @@ export default function Login({ status, canResetPassword }) {
         post(route("login"));
     };
 
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
     return (
         <GuestLayout>
             <Head title="Log in" />
@@ -39,16 +53,23 @@ export default function Login({ status, canResetPassword }) {
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="username" value="Username" />
-
-                    <TextInput
+                    <TextField
                         id="username"
                         type="text"
-                        name="username"
+                        label="Username"
                         value={data.username}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        isFocused={true}
+                        sx={{
+                            width: "100%",
+
+                            "& .MuiOutlinedInput-root.Mui-focused": {
+                                outline: "none",
+                                boxShadow: "none",
+                            },
+                            "& .MuiInputBase-input:focus": {
+                                outline: "none",
+                                boxShadow: "none",
+                            },
+                        }}
                         onChange={(e) => setData("username", e.target.value)}
                     />
 
@@ -56,18 +77,47 @@ export default function Login({ status, canResetPassword }) {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <FormControl sx={{ width: "100%" }} variant="outlined">
+                        <InputLabel htmlFor="outlined-adornment-password">
+                            Password
+                        </InputLabel>
+                        <OutlinedInput
+                            id="password"
+                            onChange={(e) =>
+                                setData("password", e.target.value)
+                            }
+                            value={data.password}
+                            type={showPassword ? "text" : "password"}
+                            sx={{
+                                width: "100%",
 
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="current-password"
-                        onChange={(e) => setData("password", e.target.value)}
-                    />
-
+                                "& .MuiOutlinedInput-root.Mui-focused": {
+                                    outline: "none",
+                                    boxShadow: "none",
+                                },
+                                "& .MuiInputBase-input:focus": {
+                                    outline: "none",
+                                    boxShadow: "none",
+                                },
+                            }}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        edge="end"
+                                    >
+                                        {showPassword ? (
+                                            <VisibilityOff />
+                                        ) : (
+                                            <Visibility />
+                                        )}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                            label="Password"
+                        />
+                    </FormControl>
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
@@ -87,14 +137,14 @@ export default function Login({ status, canResetPassword }) {
                 </div>
 
                 <div className="flex items-center justify-end mt-4">
-                    {canResetPassword && (
+                    {/* {canResetPassword && (
                         <Link
                             href={route("password.request")}
                             className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
                             Forgot your password?
                         </Link>
-                    )}
+                    )} */}
 
                     <PrimaryButton className="ms-4" disabled={processing}>
                         Log in

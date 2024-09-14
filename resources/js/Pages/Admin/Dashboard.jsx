@@ -3,6 +3,8 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import {
     Area,
     AreaChart,
+    Bar,
+    BarChart,
     CartesianGrid,
     Legend,
     ResponsiveContainer,
@@ -12,8 +14,9 @@ import {
 } from "recharts";
 import Sidebar from "../../Components/admin/Sidebar/Sidebar";
 import Header from "@/Components/admin/Header/Header";
+import { TrendingDownOutlined } from "@mui/icons-material";
 
-const data = [
+const datapengunjung = [
     {
         name: "15 jun",
         pengunjung: 400,
@@ -44,20 +47,20 @@ const data = [
     },
 ];
 
-const Dashboard = () => {
+const Dashboard = ({ auth, data }) => {
     return (
         <section className="main flex">
             <div className="sidebarWrapper flex bg-[#1c2434]">
                 <Sidebar tabId={0} />
             </div>
             <div className="flex-grow ml-72">
-                <Header></Header>
+                <Header user={auth}></Header>
                 <div className="space"></div>
-                <div className="px-3 mt-20">
+                <div className="px-3">
                     <div className="flex w-full  h-full gap-y-2 flex-col">
                         <h1 className="font-semibold text-2xl">Dashboard</h1>
                         <p className="text-md text-gray-700 mb-4">
-                            Welcome back, Rifa! We've missed you. 🥰👋
+                            {`Welcome back, ${auth.user.name} We've missed you. 🥰👋`}
                         </p>
                         <hr />
                         <div className="mt-6">
@@ -65,10 +68,10 @@ const Dashboard = () => {
                                 <div className="flex bg-white w-64 h-32 rounded-md p-3 shadow-sm gap-y-2">
                                     <div className="flex flex-col w-[70%] gap-2">
                                         <p className="text-secondary">
-                                            Visitors
+                                            Pengguna
                                         </p>
                                         <p className="text-secondary text-xl">
-                                            230
+                                            {data.pengguna}
                                         </p>
                                         <div className="flex text-xs gap-2 items-center text-gray-600">
                                             <span className="text-xs p-1 rounded-md text-green-600 bg-green-300/20">
@@ -84,10 +87,10 @@ const Dashboard = () => {
                                 <div className="flex bg-white w-64 h-32 rounded-md p-3 shadow-sm gap-y-2">
                                     <div className="flex flex-col w-[70%] gap-2">
                                         <p className="text-secondary">
-                                            Tempat KPM
+                                            Sekolah
                                         </p>
                                         <p className="text-secondary text-xl">
-                                            19
+                                            {data.sekolah}
                                         </p>
                                         <div className="flex text-xs gap-2 items-center text-gray-600">
                                             <span className="text-xs p-1 rounded-md text-green-600 bg-green-300/20">
@@ -103,10 +106,10 @@ const Dashboard = () => {
                                 <div className="flex bg-white w-64 h-32 rounded-md p-3 shadow-sm gap-y-2">
                                     <div className="flex flex-col w-[70%] gap-2">
                                         <p className="text-secondary">
-                                            Tempat PPL
+                                            Lowongan PPL
                                         </p>
                                         <p className="text-secondary text-xl">
-                                            39
+                                            {data.lowongan}
                                         </p>
                                         <div className="flex text-xs gap-2 items-center text-gray-600">
                                             <span className="text-xs p-1 rounded-md text-green-600 bg-green-300/20">
@@ -122,10 +125,10 @@ const Dashboard = () => {
                                 <div className="flex bg-white w-64 h-32 rounded-md p-3 shadow-sm gap-y-2">
                                     <div className="flex flex-col w-[70%] gap-2">
                                         <p className="text-secondary">
-                                            Jumlah Mahasiswa KPM
+                                            Jumlah Mahasiswa PPL
                                         </p>
                                         <p className="text-secondary text-xl">
-                                            423
+                                            {data.mahasiswappl}
                                         </p>
                                     </div>
                                     <div className="flex justify-center items-center w-[30%]">
@@ -135,24 +138,73 @@ const Dashboard = () => {
                                 <div className="flex bg-white w-64 h-32 rounded-md p-3 shadow-sm gap-y-2">
                                     <div className="flex flex-col w-[70%] gap-2">
                                         <p className="text-secondary">
-                                            Jumlah Mahasiswa PPL
+                                            Jumlah Supervisor
                                         </p>
                                         <p className="text-secondary text-xl">
-                                            419
+                                            {data.supervisor}
                                         </p>
                                     </div>
                                     <div className="flex justify-center items-center w-[30%]">
                                         <TrendingUpIcon className="text-green-600" />
                                     </div>
                                 </div>
+                                <div className="flex bg-white w-64 h-32 rounded-md p-3 shadow-sm gap-y-2">
+                                    <div className="flex flex-col w-[70%] gap-2">
+                                        <p className="text-secondary">
+                                            Jumlah Mahasiswa Belum Dinput nilai
+                                        </p>
+                                        <p className="text-secondary text-xl">
+                                            {data.nilaikosong}
+                                        </p>
+                                    </div>
+                                    <div className="flex justify-center items-center w-[30%]">
+                                        <TrendingDownOutlined className="text-red-500" />
+                                    </div>
+                                </div>
                             </div>
                             <div className="flex gap-3 mt-6">
+                                <div className="flex w-full bg-white h-[500px] rounded-md shadow-sm p-4">
+                                    <ResponsiveContainer>
+                                        <BarChart
+                                            data={data.recapperprodi}
+                                            margin={{
+                                                top: 5,
+                                                right: 30,
+                                                left: 20,
+                                                bottom: 10,
+                                            }}
+                                        >
+                                            <CartesianGrid strokeDasharray="3 3" />
+                                            <XAxis
+                                                dataKey="nama_prodi"
+                                                angle={-30}
+                                                textAnchor="end"
+                                                height={120} // Increase the height to accommodate rotated text
+                                                padding={{
+                                                    top: 5,
+                                                    right: 30,
+                                                    left: 20,
+                                                    bottom: 10,
+                                                }}
+                                            />
+                                            <YAxis />
+                                            <Tooltip />
+                                            <Legend />
+                                            <Bar
+                                                dataKey="total"
+                                                fill="#008A6C"
+                                            />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </div>
+                            {/* <div className="flex gap-3 mt-6">
                                 <div className="flex w-full bg-white h-[500px] rounded-md shadow-sm p-4">
                                     <ResponsiveContainer>
                                         <AreaChart
                                             width={730}
                                             height={250}
-                                            data={data}
+                                            data={datapengunjung}
                                             margin={{
                                                 top: 10,
                                                 right: 30,
@@ -195,7 +247,7 @@ const Dashboard = () => {
                                         </AreaChart>
                                     </ResponsiveContainer>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('prodi_tbl', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('kode')->nullable()->unique();
+
             $table->timestamps();
         });
     }

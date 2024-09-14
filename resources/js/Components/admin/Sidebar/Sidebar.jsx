@@ -17,7 +17,7 @@ const Sidebar = ({ tabId }) => {
     };
     return (
         <>
-            <div className="sidebar z-[100] fixed w-72 shadow-md overflow-y-hidden">
+            <div className="sidebar z-[200] fixed w-72 shadow-md overflow-y-hidden">
                 <div className="logoWrapper py-3 pl-14 flex items-center gap-2">
                     <Link href="/admin/dashboard">
                         <span className="font-semibold text-white text-4xl">
@@ -157,15 +157,36 @@ const Sidebar = ({ tabId }) => {
                                 }`}
                             >
                                 <div className="submenu">
-                                    <Button className="w-full">
+                                    <Button
+                                        className="w-full"
+                                        onClick={(e) => {
+                                            router.visit(
+                                                "/admin/daftartempatppl"
+                                            );
+                                        }}
+                                    >
                                         Tempat PPL
                                     </Button>
 
-                                    <Button className="w-full">
+                                    <Button
+                                        className="w-full"
+                                        onClick={(e) => {
+                                            router.visit(
+                                                "/admin/daftarlowonganppl"
+                                            );
+                                        }}
+                                    >
                                         Lowongan PPL
                                     </Button>
 
-                                    <Button className="w-full">
+                                    <Button
+                                        className="w-full"
+                                        onClick={(e) => {
+                                            router.visit(
+                                                "/admin/daftarmahasiswappl"
+                                            );
+                                        }}
+                                    >
                                         Daftar Mahasiswa PPL
                                     </Button>
                                 </div>
@@ -176,7 +197,7 @@ const Sidebar = ({ tabId }) => {
                                 className={`w-full flex items-center justify-center ${
                                     activeTab === 4 ? "active" : ""
                                 }`}
-                                onClick={() => isOpenSubmenu(3)}
+                                onClick={() => isOpenSubmenu(4)}
                             >
                                 <span className="icon w-[30px] h-[30px] flex items-center justify-center rounded-md">
                                     <LuUsers2 />
@@ -201,11 +222,32 @@ const Sidebar = ({ tabId }) => {
                                 }`}
                             >
                                 <div className="submenu">
-                                    <Button className="w-full">Admin</Button>
-                                    <Button className="w-full">
+                                    <Button
+                                        className="w-full"
+                                        onClick={() =>
+                                            router.visit("/admin/daftaradmin")
+                                        }
+                                    >
+                                        Admin
+                                    </Button>
+                                    <Button
+                                        className="w-full"
+                                        onClick={() => {
+                                            router.visit(
+                                                "/admin/daftarsupervisor"
+                                            );
+                                        }}
+                                    >
                                         Supervisor
                                     </Button>
-                                    <Button className="w-full">
+                                    <Button
+                                        className="w-full"
+                                        onClick={() => {
+                                            router.visit(
+                                                "/admin/daftarmahasiswa"
+                                            );
+                                        }}
+                                    >
                                         Mahasiswa
                                     </Button>
                                 </div>

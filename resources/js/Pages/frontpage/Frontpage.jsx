@@ -16,8 +16,6 @@ import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import React, { useEffect, useState } from "react";
 import PlaceIcon from "@mui/icons-material/Place";
 import SubjectIcon from "@mui/icons-material/Subject";
-import { AcademicCapIcon } from "@heroicons/react/24/outline";
-import { data_tempat_ppl } from "../../data";
 import { Head, router } from "@inertiajs/react";
 import { PiListStarBold } from "react-icons/pi";
 

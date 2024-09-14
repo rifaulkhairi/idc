@@ -27,6 +27,33 @@ class ProdiController extends Controller
 
         Excel::import(new ProdiImport, $request->file('dataprodi'));
 
-        redirect()->route('admin.daftarprodi');
+        return redirect()->route('admin.daftarprodi');
+    }
+    public function edit($id)
+    {
+        $prodi = Prodi::find($id);
+
+        return Inertia::render('Admin/pages/Data/Prodi/EditProdi', ['prodi' => $prodi]);
+    }
+
+    public function delete($id)
+    {
+        $prodi = Prodi::find($id);
+        $result = $prodi->delete();
+        if ($result) {
+            return redirect()->back()->with('message', ['success' => 'Berhasil Menghapus Prodi']);
+        }
+        return redirect()->back()->with('message', ['error' => 'Gagal Menghapus Prodi']);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $prodi = Prodi::find($id);
+        $result = $prodi->update(['name' => $request->name]);
+
+        if ($result) {
+            return redirect('admin/daftarprodi')->with('message', ['success' => 'Prodi berhasil diupdate']);
+        }
+        return redirect('admin/daftarprodi')->with('message', ['success' => 'Terjadi Kesalahan']);
     }
 }

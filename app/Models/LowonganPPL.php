@@ -9,8 +9,7 @@ class LowonganPPL extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'qouta', 'id_tempat_ppl', 'id_prodi'];
+    protected $fillable = ['name', 'id_sekolah', 'id_prodi'];
 
-    protected $table = 'lowongan_ppl_tbl';
-    
+    protected $table = 'ppl_tbl';
 }

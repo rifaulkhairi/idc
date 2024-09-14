@@ -13,21 +13,17 @@ class Mahasiswa extends Model
     protected $fillable = [
         'nim',
         'id_prodi',
-        'provinsi',
-        'kabupaten',
-        'kecamatan',
-        'desa',
-        'provinsi_now',
-        'kabupaten_now',
-        'kecamatan_now',
-        'desa_now',
-        'ipk',
-        'khs',
-        'jk',
         'no_hp_wa',
-        'nilai_microteaching',
+        'id_tempat_kpm',
+        'id_lowongan_ppl',
+        'nilai_supervisor_ppl',
+        'nilai_superviosr_kpm',
+        'nilai_keuchik',
+        'nilai_pamong',
+        'link_instrument_penilaian'
+
+
     ];
 
     protected $table = 'mahasiswa_tbl';
-    
 }

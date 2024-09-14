@@ -17,7 +17,10 @@ return new class extends Migration
             $table->string('provinsi');
             $table->string('kabupaten');
             $table->string('kecamatan');
-            $table->string('desa');
+            $table->string('username_supervisor')->nullable();
+            $table->timestamps();
+
+            $table->foreign('username_supervisor')->references('username')->on('users')->onDelete('set null');
         });
     }
 

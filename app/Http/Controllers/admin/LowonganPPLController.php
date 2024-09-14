@@ -1,54 +1,33 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\Admin;
 
-
-use App\Models\Supervisor;
 use App\Http\Controllers\Controller;
+use App\Imports\LowonganPPLImport;
 use App\Models\LowonganPPL;
 use App\Models\TempatPPL;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class LowonganPPLController extends Controller
 {
-    public function index(){
-        $lowonganppl = LowonganPPL::join('tempat_ppl_tbl', 'lowongan_ppl_tbl.id_tempat_ppl', '=', 'tempat_ppl_tbl.id_tempat')
-            ->join('prodi_tbl', 'prodi_tbl.id','=', 'lowongan_ppl_tbl.id_prodi')
-            ->select('lowongan_ppl_tbl.*', 'tempat_ppl_tbl.nama as nama_tempat_ppl', 'prodi_tbl.nama as nama_prodi')
-            ->get(); // Execute the query to retrieve the results
-                
-        return Inertia::render('Admin/pages/lowonganPPL/LowonganPPL', ['lowongan_ppl'=> $lowonganppl]);
-
+    public function index(Request $request)
+    {
+        $daftarlowonganppl = LowonganPPL::join('sekolah_tbl', 'sekolah_tbl.id', '=', 'ppl_tbl.id_sekolah')
+            ->select('ppl_tbl.id', 'ppl_tbl.name as nama_lowongan', 'sekolah_tbl.name as nama_sekolah')
+            ->get();
+        return Inertia::render('Admin/pages/PPL/lowonganppl/ListLowonganPPL', ['daftarlowonganppl' => $daftarlowonganppl]);
+    }
+    public function add()
+    {
+        return Inertia::render('Admin/pages/PPL/lowonganppl/AddLowonganPPL');
     }
 
-    public function store(Request $request){
-        // $data = $request->validated();
-        // $data = $request->validated();
-
-
-        TempatPPL::create([
-            'nama' => $request['nama'],
-            'provinsi' => $request['provinsi'],
-            'kabupaten' => $request['kabupaten'],
-            'kecamatan' => $request['kecamatan'],
-            'desa' => $request['desa'],
-            'id_supervisor' => $request['id_supervisor'],
-
-        ]);
-        return to_route('admin.tempatppl');
-
+    public function importlowonganppl(Request $request)
+    {
+        Excel::import(new LowonganPPLImport, $request->file('daftarlowonganppl'));
+        return redirect()->route('admin.daftarlowonganppl');
     }
-    public function delete(){
-        
-    }
-
-    public function addTempatPPL(){
-        $daftar_supervisor = Supervisor::all();
-        
-
-        return Inertia::render('Admin/pages/addTempatPPL/AddTempatPPL', ['daftar_supervisor'=>$daftar_supervisor]);
-
-    }
-    
 }
