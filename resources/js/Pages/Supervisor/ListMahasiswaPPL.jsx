@@ -8,6 +8,7 @@ import { FiEdit2 } from "react-icons/fi";
 import { router } from "@inertiajs/react";
 import { useEffect } from "react";
 import { useState } from "react";
+import { TiEdit } from "react-icons/ti";
 
 const columns = [
     {
@@ -24,17 +25,17 @@ const columns = [
     { name: "name", label: "Nama Mahasiswa" },
     { name: "nim", label: "NIM" },
     { name: "nama_prodi", label: "Prodi" },
-    {
-        name: "nama_prodi",
-        label: "Nama Lowongan",
-        options: {
-            filter: true,
-            sort: true,
-            customBodyRender: (value, tableMeta) => {
-                return `PPL ${value}`;
-            },
-        },
-    },
+    // {
+    //     name: "nama_prodi",
+    //     label: "Nama Lowongan",
+    //     options: {
+    //         filter: true,
+    //         sort: true,
+    //         customBodyRender: (value, tableMeta) => {
+    //             return `PPL ${value}`;
+    //         },
+    //     },
+    // },
     { name: "nama_sekolah", label: "Nama Sekolah" },
     {
         name: "nilai_supervisor_ppl",
@@ -77,14 +78,16 @@ const columns = [
         options: {
             customBodyRender: (value) => (
                 <div className="flex flex-row justify-center items-center gap-x-2">
-                    <IconButton
-                        onClick={(e) => {
-                            e.preventDefault();
-                            router.get(`/supervisor/editnilai/${value}`);
-                        }}
-                    >
-                        <FiEdit2 className="text-md" />
-                    </IconButton>
+                    <ul className="flex flex-row justify-center items-center text-lg">
+                        <li
+                            className="p-1 bg-yellow-500 text-white cursor-pointer hover:scale-[1.1]"
+                            onClick={(e) =>
+                                router.get(`/supervisor/editnilai/${value}`)
+                            }
+                        >
+                            <TiEdit />
+                        </li>
+                    </ul>
                 </div>
             ),
             filter: false,

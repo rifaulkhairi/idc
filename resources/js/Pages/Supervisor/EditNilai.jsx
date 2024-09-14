@@ -5,6 +5,7 @@ import Header from "@/Components/supervisor/Header/Header";
 import MUIDataTable from "mui-datatables";
 import {
     Alert,
+    Breadcrumbs,
     Button,
     IconButton,
     InputBase,
@@ -99,7 +100,19 @@ const EditNilai = ({ mahasiswa, base_url, flash }) => {
             <div className="flex w-full ml-72 flex-col">
                 <Header></Header>
                 <div className="space"></div>
-                <div className="px-3 max-w-3xl">
+
+                <div className="px-8 max-w-3xl">
+                    <div className="mb-3">
+                        <Breadcrumbs>
+                            <Link
+                                href="/supervisor/daftarmahasiswappl"
+                                className="text-blue-600"
+                            >
+                                Daftar Mahasiswa
+                            </Link>
+                            <Link>Edit Nilai</Link>
+                        </Breadcrumbs>
+                    </div>
                     <TableContainer component={Paper} elevation={1}>
                         <Table>
                             <TableBody>

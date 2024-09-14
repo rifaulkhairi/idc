@@ -61,27 +61,8 @@ const Nilai = ({ lowongan_ppl, flash, auth, mahasiswa }) => {
     return (
         <ThemeProvider theme={theme}>
             <Head title="Home" />
-            {/* <Header /> */}
-            <header className="fixed z-[100] flex w-full ">
-                <div className="flex w-full h-20 lg:px-20 md:px-5 bg-white shadow-md justify-between sm:px-2 backdrop-blur-sm ">
-                    <div className="flex py-3">
-                        <div className="flex items-center">
-                            <img
-                                className="w-20 min-w-20"
-                                src="https://upload.wikimedia.org/wikipedia/commons/a/af/Lambang_UIN_Ar-Raniry.png"
-                                alt="logo"
-                            ></img>
-                        </div>
+            <Header />
 
-                        <div className="w-[0.5px] bg-neutral-400"></div>
-                        <div className="flex h-full items-center">
-                            <span className="ml-3 text-xl font-semibold">
-                                IDC
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </header>
             <main className="flex justify-center flex-col items-center w-full px-6  lg:px-10">
                 <div className="container">
                     <div className="h-32"></div>

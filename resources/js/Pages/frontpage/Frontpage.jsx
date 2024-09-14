@@ -130,7 +130,7 @@ const Frontpage = ({ lowongan_ppl, flash }) => {
         <ThemeProvider theme={theme}>
             <Head title="Home" />
             <header className="fixed z-[100] flex w-full ">
-                <div className="flex w-full h-20 lg:px-20 md:px-5 bg-white shadow-md justify-between sm:px-2 backdrop-blur-sm bg-opacity-50">
+                <div className="flex w-full h-20 lg:px-20 md:px-5 bg-white shadow-md justify-between sm:px-2">
                     <div className="flex py-3">
                         <div className="flex items-center">
                             <img
