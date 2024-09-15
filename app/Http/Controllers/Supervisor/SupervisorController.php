@@ -25,7 +25,7 @@ class SupervisorController extends Controller
         $data['mahasiswappl'] = Mahasiswa::all()->count();
         $data['recapperprodi'] = Mahasiswa::join('prodi_tbl', 'prodi_tbl.id', '=', 'mahasiswa_tbl.id_prodi')
             ->select('mahasiswa_tbl.id_prodi', DB::raw('count(*) as total'), 'prodi_tbl.name as nama_prodi')
-            ->groupBy('mahasiswa_tbl.id_prodi')
+            ->groupBy('mahasiswa_tbl.id_prodi', 'prodi_tbl.name')  // Include prodi_tbl.name in the groupBy clause
             ->get();
         $data['supervisor'] = User::where('users.role', '=', 'supervisor')->count();
 
