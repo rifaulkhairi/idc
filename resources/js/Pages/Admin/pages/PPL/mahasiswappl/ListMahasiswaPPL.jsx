@@ -31,20 +31,10 @@ const ListMahasiswaPPL = ({ daftarmahasiswappl, flash }) => {
                 },
             },
         },
-        { name: "name", label: "Nama Mahasiswa" },
+        { name: "nama_mahasiswa", label: "Nama Mahasiswa" },
         { name: "nim", label: "NIM" },
         { name: "nama_prodi", label: "Prodi" },
-        {
-            name: "nama_prodi",
-            label: "Nama Lowongan",
-            options: {
-                filter: true,
-                sort: true,
-                customBodyRender: (value, tableMeta) => {
-                    return `PPL ${value}`;
-                },
-            },
-        },
+        { name: "nama_supervisor", label: "Nama Supervisor" },
         { name: "nama_sekolah", label: "Nama Sekolah" },
         {
             name: "nilai_supervisor_ppl",

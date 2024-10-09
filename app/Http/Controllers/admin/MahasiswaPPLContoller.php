@@ -12,12 +12,14 @@ class MahasiswaPPLContoller extends Controller
 {
     public function index()
     {
-        $daftarmahasiswappl = Mahasiswa::join('users', 'users.username', '=', 'mahasiswa_tbl.nim')
+        $daftarmahasiswappl = Mahasiswa::join('users as mahasiswa_user', 'mahasiswa_user.username', '=', 'mahasiswa_tbl.nim')
             ->join('prodi_tbl', 'prodi_tbl.id', '=', 'mahasiswa_tbl.id_prodi')
             ->join('ppl_tbl', 'ppl_tbl.id', '=', 'mahasiswa_tbl.id_lowongan_ppl')
             ->join('sekolah_tbl', 'sekolah_tbl.id', '=', 'ppl_tbl.id_sekolah')
-            ->select('mahasiswa_tbl.*', 'prodi_tbl.name as nama_prodi', 'users.name', 'sekolah_tbl.name as nama_sekolah')
+            ->join('users as supervisor_user', 'supervisor_user.username', '=', 'sekolah_tbl.username_supervisor')
+            ->select('mahasiswa_tbl.*', 'supervisor_user.name as nama_supervisor', 'prodi_tbl.name as nama_prodi', 'mahasiswa_user.name as nama_mahasiswa', 'sekolah_tbl.name as nama_sekolah', 'supervisor_user.name as nama_supervisor')
             ->get();
+
         return Inertia::render('Admin/pages/PPL/mahasiswappl/ListMahasiswaPPL', ['daftarmahasiswappl' => $daftarmahasiswappl]);
     }
 

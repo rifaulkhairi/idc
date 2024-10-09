@@ -12,4 +12,9 @@ class Sekolah extends Model
     protected $fillable = ['name', 'provinsi', 'kabupaten', 'kecamatan', 'username_supervisor'];
 
     protected $table = 'sekolah_tbl';
+
+    public function supervisor()
+    {
+        return $this->hasOne(User::class, 'username_supervisor');
+    }
 }

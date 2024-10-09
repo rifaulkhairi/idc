@@ -359,12 +359,21 @@ const EditNilai = ({ mahasiswa, base_url, flash }) => {
                                                         )
                                                     }
                                                 />
-                                                <p
-                                                    class="mt-1 text-sm text-gray-500 dark:text-gray-300"
-                                                    id="file_input_help"
-                                                >
-                                                    .pdf
-                                                </p>
+                                                <div className="flex gap-x-7 text-sm text-red-500">
+                                                    <p
+                                                        class="mt-1 text-sm  dark:text-gray-300"
+                                                        id="file_input_help"
+                                                    >
+                                                        .pdf
+                                                    </p>
+                                                    <p
+                                                        class="mt-1 text-sm  dark:text-gray-300"
+                                                        id="file_input_help"
+                                                    >
+                                                        Pastikan File kurang
+                                                        dari 500kb
+                                                    </p>
+                                                </div>
                                             </div>
                                             {mahasiswa.link_instrument_penilaian && (
                                                 <a
